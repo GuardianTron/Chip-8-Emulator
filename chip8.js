@@ -28,6 +28,11 @@ class Chip8{
         }
     }
 
+    //increment the program counter by 2
+    _skipInstruction(){
+        this.pc +=2;
+    }
+
     /** cls */
     clearScreen(){
         for(let i = 0; i < this.vram.length; i++){
@@ -53,6 +58,20 @@ class Chip8{
         this.sp++;
         this.callStack[this.sp] = this.pc;
         this.pc = addr;
+    }
+
+    //** SE Vx, byte -- skip instruction if register Vx content equals supplied value */
+    skipEqualValue(registerX, value){
+        if(this.vReg[registerX] === value){
+            this._skipInstruction();
+        }
+    }
+
+    /**SNE Vx,byte -- skip instruction if register Vx content not equal to supplied value */
+    skipNotEqualValue(registerX,value){
+        if(this.vReg[registerX] !== value){
+            this._skipInstruction();
+        }
     }
 
 
