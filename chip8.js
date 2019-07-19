@@ -16,7 +16,7 @@ class Chip8{
 
         //set up vital register
         this.vReg = new Unit8Array(16);
-        this.callStack = new Uint8Array(16);
+        this.callStack = new Array(16); //allow for changing size
         this.i = 0x200; //memory address register - most programs start at this memory location
         this.sp = 0; //stack pointer
         this.pc = 0; //program counter
@@ -29,7 +29,13 @@ class Chip8{
         }
     }
 
-    
+    /** RET */
+    returnFromSubroutine(){
+        this.pc = this.callStack[this.sp];
+        this.sp--;
+    }
+
+
 }
 
 export {Chip8}
