@@ -74,6 +74,15 @@ class Chip8{
         }
     }
 
+    /**SE Vx,Vy -- skip instruction if contents of register Vx are equal to contents of register Vx */
+    skipEqualRegisters(registerX,registerY){
+        if(this.vReg[registerX] === this.vReg[registerY]){
+            this._skipInstruction();
+        }
+    }
+
+
+
 
 }
 
