@@ -22,6 +22,12 @@ class Chip8{
         this.pc = 0; //program counter
     }
 
+    _testRamAddress(addr){
+        if(addr >= this.ram.length){
+            throw new Error("Instruction address is outside of the memory bounds");
+        }
+    }
+
     /** cls */
     clearScreen(){
         for(let i = 0; i < this.vram.length; i++){
@@ -37,9 +43,15 @@ class Chip8{
 
     /** JP */
     jump(addr){
-        if(addr >= this.ram.length){
-            throw new Exception("Instruction address is outside of the memory bounds");
-        }
+        this._testRamAddress(addr);
+        this.pc = addr;
+    }
+
+    /** CALL */
+    call(addr){
+        this._testRamAddress(addr);
+        this.sp++;
+        this.callStack[this.sp] = this.pc;
         this.pc = addr;
     }
 
