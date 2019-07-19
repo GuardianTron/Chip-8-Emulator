@@ -35,6 +35,14 @@ class Chip8{
         this.sp--;
     }
 
+    /** JP */
+    jump(addr){
+        if(addr >= this.ram.length){
+            throw new Exception("Instruction address is outside of the memory bounds");
+        }
+        this.pc = addr;
+    }
+
 
 }
 
