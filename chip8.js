@@ -95,6 +95,11 @@ class Chip8{
         this.vReg[registerX] += byte;
     }
 
+    /** LD Vx,Vy -- load the contents of register Y into register X */
+    loadRegisterYIntoRegisterX(registerX,registerY){
+        this.vReg[registerX] = this.vReg[registerY];
+    }
+
 
 
 }
