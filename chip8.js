@@ -90,6 +90,11 @@ class Chip8{
         this.vReg[registerX] = byte;
     }
 
+    /** ADD Vx, byte -- add context of register X to byte and store in Vx */
+    addRegisterToByte(registerX,byte){
+        this.vReg[registerX] += byte;
+    }
+
 
 
 }
