@@ -85,6 +85,10 @@ class Chip8{
         }
     }
 
+    /** LD Vx, byte --load byte into register x */
+    loadRegisterByte(registerX,byte){
+        this.vReg[registerX] = byte;
+    }
 
 
 
