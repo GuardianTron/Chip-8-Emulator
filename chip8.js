@@ -107,6 +107,13 @@ class Chip8{
         this.vReg[registerX] = regX | regY;
     }
 
+    /** AND Vx,Vy -- bitwse and of registers X and Y.  Resuslts is stored in register X */
+    andRegisterXRegisterY(registerX,registerY){
+        let regX = this.vReg[registerX];
+        let regY = this.vReg[registerY];
+        this.vReg[registerX] = regX & regY;
+    }
+
 
 
 }
