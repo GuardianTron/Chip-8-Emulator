@@ -8,11 +8,15 @@ class Chip8{
         
         this.ram = new Uint8Array(4096);
         //copy rom into ram
-        for(let i = 0; i < rom.length && i < this.ram.length; i++ ){
-            this.ram[i] = rom[i];
-        }
-        this.vramSize = 64/8*32;
-        this.vram = new Uint8Array(this.vramSize); //a 64x32 pixel display. 1 bit = 1 pixel. 1 byte = 8x1 block of pixels
+        this.ram.set(rom.slice(0,4096));
+        
+        /**
+         * Chip 8 roms are stored in big endian order.  
+         * DataView is used to avoid issues with 16 bit access on 
+         * little endian systems.
+         */
+
+        this.vram = new VRam();
 
         //set up vital register
         this.vReg = new Unit8Array(16);
@@ -86,4 +90,30 @@ class Chip8{
 
 }
 
-export {Chip8}
+class VRam{
+
+    constructor(){
+        /**
+         * The Chip 8 display has two modes, a default mode of 64*32 pixel and 
+         * an extended mode of 128*64.  Each pixel is represented by a single bit in memory.
+         * VRam will allocate enough memory for extended mode, but will use a flag to determine 
+         * which portion of the ram should be accessed. 
+         */
+        this._extendedMode = false;
+        this.ram = new Unit8Array(128*64/8);
+
+
+    }
+    set extendedMode(val=true){
+        this._extendedMode = val;
+    }
+
+    get extendedMode(){
+        return this._extendedMode;
+    }
+
+    
+
+}
+
+export {Chip8,VRam}
