@@ -114,6 +114,14 @@ class Chip8{
         this.vReg[registerX] = regX & regY;
     }
 
+    /** XOR Vx,Vy -- bitwise exclusive or of registers X and Y. Result stored in register X*/
+    xorRegisterXRegisterY(registerX,registerY){
+        let regX = this.vReg[registerX];
+        let regY = this.vReg[registerY];
+        this.vReg[registerX] = regX ^ regY;
+
+    }
+
 
 
 }
