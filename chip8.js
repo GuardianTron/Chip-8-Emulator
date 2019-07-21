@@ -100,6 +100,13 @@ class Chip8{
         this.vReg[registerX] = this.vReg[registerY];
     }
 
+    /** OR Vx,Vy - bit-wise OR of registers X and Y. Result is stored in register X */
+    orRegisterXRegisterY(registerX,registerY){
+        let regX = this.vReg[registerX];
+        let regY = this.vReg[registerY];
+        this.vReg[registerX] = regX | regY;
+    }
+
 
 
 }
