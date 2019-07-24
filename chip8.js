@@ -181,7 +181,7 @@ const REG_WIDTH = 64;
 const REG_HEIGHT = 32;
 const SUPER_WIDTH = 128;
 const SUPER_HEIGHT = 64;
-const RAM_WIDTH_BITS = 128 ;
+const RAM_WIDTH_BYTES = 16 ;
 const RAM_HEIGHT = 64;
 
 class VRam{
@@ -195,7 +195,7 @@ class VRam{
          */
        
         this.disableExtendedMode();
-        this.ram = new Unit8Array(RAM_WIDTH_BITS * RAM_HEIGHT / 8);
+        this.ram = new Unit8Array(RAM_WIDTH_BYTES * RAM_HEIGHT);
 
 
     }
@@ -234,8 +234,12 @@ class VRam{
     drawRow(x,y,rowData, useExtended = false){
         //regular chip8 mode
         if(!useExtended || !this._extendedMode){
+            //Wrap coordinates if they go outside of screen
+            x %= this._screenWidth;
+            y %= this._screenHeight;
             //get start of first byte
-            let position = y * this._width + Math.floor(x/8);
+            let xByteColumn = Math.floor(x/8); 
+            let position = y * RAM_WIDTH_BYTES + xByteColumn;
             //determine if portion of screen to write to crosses byte boundaries
             let byteOffset = x%8;
          
@@ -246,7 +250,15 @@ class VRam{
              */
             this.ram[position] = this.ram[position] ^ (byte >> byteOffset);
             if(byteOffest !==0 ){
-                this.ram[position+1] = this.ram[position+1] ^ (byte << (8-byteOffset));
+                //wrap second byte back to start of screen if outside of it
+                //otherwise, draw to next adjacent byte
+                if(xByteColumn >= this._screenWidth/8){
+                    position = y * RAM_WIDTH_BYTES;
+                }
+                else{
+                    position++;
+                }
+                this.ram[position] = this.ram[position] ^ (byte << (8-byteOffset));
     
             }
 
