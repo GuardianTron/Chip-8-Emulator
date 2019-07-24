@@ -222,17 +222,19 @@ class VRam{
         //regular chip8 mode
         if(!useExtended || !this._extendedMode){
             //get start of first byte
-            let position = x * this._width + Math.floor(y/8);
+            let position = y * this._width + Math.floor(x/8);
             //determine if portion of screen to write to crosses byte boundaries
-            let byteOffset = y%8;
+            let byteOffset = x%8;
          
             /*
              * Screen section falls in between two bytes.  Right shift byte to be drawn by the 
              * offset above to handle the left most section, and then left shift the byte again
              * by 8 - offset for the right most section.
              */
-                this.ram[position] = this.ram[position] ^ (byte >> byteOffset);
+            this.ram[position] = this.ram[position] ^ (byte >> byteOffset);
+            if(byteOffest !==0 ){
                 this.ram[position+1] = this.ram[position+1] ^ (byte << (8-byteOffset));
+    
             }
 
         }
