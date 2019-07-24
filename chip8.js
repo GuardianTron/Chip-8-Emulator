@@ -41,9 +41,7 @@ class Chip8{
 
     /** cls */
     clearScreen(){
-        for(let i = 0; i < this.vram.length; i++){
-            this.vram = 0;
-        }
+       this.vram.clearScreen()
     }
 
     /** RET */
@@ -181,6 +179,12 @@ class VRam{
 
     get extendedMode(){
         return this._extendedMode;
+    }
+
+    clearScreen(){
+        for(let i = 0; i < this.ram.length; i++){
+            this.ram[i] = 0;
+        }
     }
 
     
