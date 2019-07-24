@@ -177,6 +177,13 @@ class Chip8{
 
 }
 
+const REG_WIDTH = 64;
+const REG_HEIGHT = 32;
+const SUPER_WIDTH = 128;
+const SUPER_HEIGHT = 64;
+const RAM_WIDTH_BITS = 128 ;
+const RAM_HEIGHT = 64;
+
 class VRam{
 
     constructor(){
@@ -186,17 +193,23 @@ class VRam{
          * VRam will allocate enough memory for extended mode, but will use a flag to determine 
          * which portion of the ram should be accessed. 
          */
-        this._height = 128;
-        this._width = 64;
+       
+        this.disableExtendedMode();
+        this.ram = new Unit8Array(RAM_WIDTH_BITS * RAM_HEIGHT / 8);
+
+
+    }
+    enableExtendedMode(){
+        this._extendedMode = true;
+        this._screenHeight = SUPER_HEIGHT;
+        this._screenWidth = SUPER_WIDTH;
+    }
+
+    disableExtendedMode(){
         this._extendedMode = false;
-        this.ram = new Unit8Array(this._width*this._height/8);
-
-
+        this._screenHeight = REG_HEIGHT;
+        this._screenWidth = REG_WIDTH;
     }
-    set extendedMode(val=true){
-        this._extendedMode = val;
-    }
-
     get extendedMode(){
         return this._extendedMode;
     }
