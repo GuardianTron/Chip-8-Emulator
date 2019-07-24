@@ -157,12 +157,17 @@ class Chip8{
 
     /** LD I, addr -- load a 12 bit memory address into adress register I*/
     loadIAddress(addr){
-        if(addr > 4096){
-            throw new Error(`${addr} is outside of Chip 8 address space.`);
-        }
+       this._testRamAddress();
         this.i = addr;
     }
 
+    /** JP V0, addr -- jump to location V0 + addr */
+    jumpV0(addr){
+        addr = addr + this.vReg[0];
+        this._testRamAddress(addr);
+        this.pc = addr;
+        this._incrementPC = false;
+    }
 
 
 }
