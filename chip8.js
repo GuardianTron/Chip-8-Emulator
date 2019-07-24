@@ -199,6 +199,7 @@ class VRam{
 
 
     }
+
     enableExtendedMode(){
         this._extendedMode = true;
         this._screenHeight = SUPER_HEIGHT;
@@ -248,22 +249,46 @@ class VRam{
              * offset above to handle the left most section, and then left shift the byte again
              * by 8 - offset for the right most section.
              */
+            let oldByte = this.ram[position];
             this.ram[position] = this.ram[position] ^ (byte >> byteOffset);
+            //see if bit flipped from set to unset
+            let bitUnset = this._testBitUnset(oldByte,this.ram[position]);
+            
             if(byteOffest !==0 ){
                 //wrap second byte back to start of screen if outside of it
                 //otherwise, draw to next adjacent byte
                 if(xByteColumn >= this._screenWidth/8){
                     position = y * RAM_WIDTH_BYTES;
                 }
-                else{
+                else{ 
                     position++;
                 }
+                oldByte = this.ram[position];
                 this.ram[position] = this.ram[position] ^ (byte << (8-byteOffset));
+                //only test for unset bit if another bit had not been fliped off
+                if(!bitUnset){
+                    bitUnset = this._testBitUnset(oldByte,this.ram[position]);
+                }
     
             }
 
+            return bitUnset;
+
         }
 
+    _testBitUnset(oldColumn,newColumn,bytesPerColumn=1){
+        let bitUnset = false;
+        for(let i = 0; i < 8 * bytesPerColumn; i++){
+            let mask = 1 << i;
+            let oldBit = oldColumn & mask;
+            if(oldBit){
+                let newBit = newColumn & mask;
+                if(!newBit){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 
