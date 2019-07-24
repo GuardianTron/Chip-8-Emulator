@@ -225,16 +225,12 @@ class VRam{
             let position = x * this._width + Math.floor(y/8);
             //determine if portion of screen to write to crosses byte boundaries
             let byteOffset = y%8;
-            if(byteOffset === 0){ //byte aligns perfectly, only need to write one byte
-                this.ram[position] = this.ram[position] ^ byte;
-            }
-            else{ //screen section crosses byte boundaries, will need two bytes
-                
-                /*
-                 * Screen section falls in between two bytes.  Right shift byte to be drawn by the 
-                 * offset above to handle the left most section, and then left shift the byte again
-                 * by 8 - offset for the right most section.
-                 */
+         
+            /*
+             * Screen section falls in between two bytes.  Right shift byte to be drawn by the 
+             * offset above to handle the left most section, and then left shift the byte again
+             * by 8 - offset for the right most section.
+             */
                 this.ram[position] = this.ram[position] ^ (byte >> byteOffset);
                 this.ram[position+1] = this.ram[position+1] ^ (byte << (8-byteOffset));
             }
