@@ -24,6 +24,7 @@ class Chip8{
         this.i = 0x200; //memory address register - most programs start at this memory location
         this.sp = 0; //stack pointer
         this.pc = 0; //program counter
+        this._incrementPC = true; //increment the program counter -- set to false by certain instructions such as skips
     }
 
     _testRamAddress(addr){
@@ -35,6 +36,7 @@ class Chip8{
     //increment the program counter by 2
     _skipInstruction(){
         this.pc +=2;
+        this._incrementPC = false;
     }
 
     /** cls */
@@ -54,6 +56,7 @@ class Chip8{
     jump(addr){
         this._testRamAddress(addr);
         this.pc = addr;
+        this._incrementPC = false;
     }
 
     /** CALL */
@@ -68,6 +71,7 @@ class Chip8{
     skipEqualValue(registerX, value){
         if(this.vReg[registerX] === value){
             this._skipInstruction();
+
         }
     }
 
@@ -144,6 +148,14 @@ class Chip8{
     shiftLeft(registerX){
         this.vReg[0xF] = this.vReg[registerX] & (1 << 8);
         this.vReg[registerX] = this.vReg[registerX] << 1;
+    }
+
+    /** SNE Vx, Vy -- Increment the program counter by two if Vx != Vy  */
+    skipNotEqualRegisters(registerX,registerY){
+        if(this.vReg[registerX] != this.vReg[registerY]){
+            this.pc++;
+            this._incrementPC = false;
+        }
     }
 
 
