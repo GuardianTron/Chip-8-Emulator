@@ -8,7 +8,7 @@ class Chip8{
         
         this.ram = new Uint8Array(4096);
         //copy rom into ram
-        this.ram.set(rom.slice(0,4096));
+        this.ram.set(rom.slice(0,4096),0x200);
         
         /**
          * Chip 8 roms are stored in big endian order.  
@@ -153,6 +153,14 @@ class Chip8{
         if(this.vReg[registerX] != this.vReg[registerY]){
             this._skipInstruction()
         }
+    }
+
+    /** LD I, addr -- load a 12 bit memory address into adress register I*/
+    loadIAddress(addr){
+        if(addr > 4096){
+            throw new Error(`${addr} is outside of Chip 8 address space.`);
+        }
+        this.i = addr;
     }
 
 
