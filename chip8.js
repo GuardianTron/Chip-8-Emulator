@@ -134,7 +134,17 @@ class Chip8{
         this.vReg[registerX] = this.vReg[registerX] >> 1;
     }
 
-
+    /** SUBN Vx,Vy -- Vx=Vy-Vx  , VF = (Vy > Vx */
+    subNegative(registerX,registerY){
+        this.vReg[0xF] = (registerY > registerX)?1:0;
+        this.vReg[registerX] = this.vReg[registerY] - this.vReg[registerX];
+    }
+    
+    /** SHL Vx {, Vy} -- shift left Vx by one bit. Save MSB into VF */
+    shiftLeft(registerX){
+        this.vReg[0xF] = this.vReg[registerX] & (1 << 8);
+        this.vReg[registerX] = this.vReg[registerX] << 1;
+    }
 
 
 
