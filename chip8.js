@@ -122,6 +122,20 @@ class Chip8{
 
     }
 
+    /** SUB Vx,Vy -- Register X = Register X - Register Y -- Vf = Vx>Vy*/
+    sub(registerX,registerY){
+        this.vReg[0xF] = (registerX > registerY)?1:0;
+        this.vReg[registerX] = this.vReg[registerX] - this.vReg[registery];
+    }
+
+    /** SHR Vx {,Vy} -- Shift right by 1.  VF = lsb. Vx = Vx >> 1 (Note: Vy is ignored) */
+    shiftRight(registerX){
+        this.vReg[0xF] = this.vReg[registerX] & 1; //obtain lsb and save
+        this.vReg[registerX] = this.vReg[registerX] >> 1;
+    }
+
+
+
 
 
 }
