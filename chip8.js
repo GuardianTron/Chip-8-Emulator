@@ -169,6 +169,11 @@ class Chip8{
         this._incrementPC = false;
     }
 
+    /** RND Vx, byte -- Set register X to a random number char bitwise ANDed with byte */
+    random(registerX,byte){
+        this.vReg[registerX] = Math.round(Math.random() * 255) & byte;
+    }
+
 
 }
 
@@ -181,8 +186,10 @@ class VRam{
          * VRam will allocate enough memory for extended mode, but will use a flag to determine 
          * which portion of the ram should be accessed. 
          */
+        this._height = 128;
+        this._width = 64;
         this._extendedMode = false;
-        this.ram = new Unit8Array(128*64/8);
+        this.ram = new Unit8Array(this._width*this._height/8);
 
 
     }
@@ -194,11 +201,49 @@ class VRam{
         return this._extendedMode;
     }
 
+
     clearScreen(){
         for(let i = 0; i < this.ram.length; i++){
             this.ram[i] = 0;
         }
     }
+
+    /**
+     * Draws a row to the screen memory starting at coordinates  x, and y.
+     * Rows are presented by either a single byte in normal mode and two bytes
+     * in extended mode
+     * @param {*} x - X coordinate to start drawing row
+     * @param {*} y - Y coordiante to start drawing row
+     * @param {*} rowData - one or two bytes of pixel data dependent upon extended mode
+     * @param {*} useExtended - Even in extended mode, standard sprites can be used. If true and in extended mode, assume 16 bit row
+     */
+
+    drawRow(x,y,rowData, useExtended = false){
+        //regular chip8 mode
+        if(!useExtended || !this._extendedMode){
+            //get start of first byte
+            let position = x * this._width + Math.floor(y/8);
+            //determine if portion of screen to write to crosses byte boundaries
+            let byteOffset = y%8;
+            if(byteOffset === 0){ //byte aligns perfectly, only need to write one byte
+                this.ram[position] = this.ram[position] ^ byte;
+            }
+            else{ //screen section crosses byte boundaries, will need two bytes
+                
+                /*
+                 * Screen section falls in between two bytes.  Right shift byte to be drawn by the 
+                 * offset above to handle the left most section, and then left shift the byte again
+                 * by 8 - offset for the right most section.
+                 */
+                this.ram[position] = this.ram[position] ^ (byte >> byteOffset);
+                this.ram[position+1] = this.ram[position+1] ^ (byte << (8-byteOffset));
+            }
+
+        }
+
+    }
+
+
 
     
 
