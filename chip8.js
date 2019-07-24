@@ -153,8 +153,7 @@ class Chip8{
     /** SNE Vx, Vy -- Increment the program counter by two if Vx != Vy  */
     skipNotEqualRegisters(registerX,registerY){
         if(this.vReg[registerX] != this.vReg[registerY]){
-            this.pc++;
-            this._incrementPC = false;
+            this._skipInstruction()
         }
     }
 
