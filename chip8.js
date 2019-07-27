@@ -1,3 +1,4 @@
+export {Chip8,VRam}
 class Chip8{
 
     constructor(rom){
@@ -326,4 +327,3 @@ class VRam{
 
 }
 
-export {Chip8,VRam}
