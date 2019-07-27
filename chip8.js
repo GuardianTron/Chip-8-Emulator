@@ -90,6 +90,7 @@ class Chip8{
         this.sp++;
         this.callStack[this.sp] = this.pc;
         this.pc = addr;
+        this._incrementPC = false;
     }
 
     //** SE Vx, byte -- skip instruction if register Vx content equals supplied value */
