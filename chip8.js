@@ -26,6 +26,14 @@ class Chip8{
         this.sp = 0; //stack pointer
         this._pc = 0; //program counter
         this._incrementPC = true; //increment the program counter -- set to false by certain instructions such as skips
+
+        //array of currently down keys - true if pressed 
+        this._pressedKeys = new Array(16);
+        this._pressedKeys.fill(false);
+    }
+
+    get pressedKeys(){
+        return this._pressedKeys;
     }
 
     get i(){
@@ -219,6 +227,8 @@ class Chip8{
             }
         }
     }
+
+    /** SkP Vx  -- Skip instruction if key value in Vx is pressed. */
 
 
 }
