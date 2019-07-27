@@ -145,7 +145,7 @@ class Chip8{
 
     /** SUB Vx,Vy -- Register X = Register X - Register Y -- Vf = Vx>Vy*/
     sub(registerX,registerY){
-        this.vReg[0xF] = (registerX > registerY)?1:0;
+        this.vReg[0xF] = (this.vReg[registerX] > this.vReg[registerY])?1:0;
         this.vReg[registerX] = this.vReg[registerX] - this.vReg[registery];
     }
 
@@ -157,7 +157,7 @@ class Chip8{
 
     /** SUBN Vx,Vy -- Vx=Vy-Vx  , VF = (Vy > Vx */
     subNegative(registerX,registerY){
-        this.vReg[0xF] = (registerY > registerX)?1:0;
+        this.vReg[0xF] = (this.vReg[registerY] > this.vReg[registerX])?1:0;
         this.vReg[registerX] = this.vReg[registerY] - this.vReg[registerX];
     }
     
