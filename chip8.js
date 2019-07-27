@@ -161,7 +161,7 @@ class Chip8{
     /** SHR Vx {,Vy} -- Shift right by 1.  VF = lsb. Vx = Vx >> 1 (Note: Vy is ignored) */
     shiftRight(registerX){
         this.vReg[0xF] = this.vReg[registerX] & 1; //obtain lsb and save
-        this.vReg[registerX] = this.vReg[registerX] >> 1;
+        this.vReg[registerX] = this.vReg[registerX] >>> 1;
     }
 
     /** SUBN Vx,Vy -- Vx=Vy-Vx  , VF = (Vy > Vx */
@@ -230,6 +230,12 @@ class Chip8{
     }
 
     /** SkP Vx  -- Skip instruction if key value in Vx is pressed. */
+    skipKeyPressed(registerX){
+        if(this.pressedKeys[registerX]){
+            this._skipInstruction();
+        }
+    }
+
 
 
 }
