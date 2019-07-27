@@ -236,6 +236,13 @@ class Chip8{
         }
     }
 
+    /** SKNP Vx - skip next instruction if key in Vx not pressed */
+    skipKeyNotPressed(registerX){
+        if(!this.pressedKeys[registerX]){
+            this._skipInstruction();
+        }
+    }
+
 
 
 }
