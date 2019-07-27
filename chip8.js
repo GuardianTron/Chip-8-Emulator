@@ -174,6 +174,35 @@ class Chip8{
         this.vReg[registerX] = Math.round(Math.random() * 255) & byte;
     }
 
+    /** DRW Vx,Vy, nibble -- for regular mode draw sprite stored at I stored at location Vx and Vy, nibble rows in regular mode. 16 with nibble == 0 in extended */
+    draw(registerX,registerY,rows){
+        //set VF to zero.  Change to one if a pixel is unset during rendering.
+        this.vReg[0xF] = 0;
+        //create start address
+        let extendedMode = this.vRam.extendedMode && rows == 0; //determine whether or not to use
+        if(extendedMode){
+            rows = 16;  //all sprites are 16 x 16 for extended drawing mode    
+        } 
+        for(let row = 0; row < rows; row++){
+            //set start address of sprite row -- extended sprite rows are 2 bytes vs 1 byte for regular
+            let spriteRow;
+            if(extendedMode){
+                this.i += row * 2;
+                spriteRow = this.ram[this.i] << 8;
+                this.i++;
+                spriteRow += this.ram[this.i];
+            }
+            else{
+                this.i += row;
+                spriteRow = this.ram[this.i];
+            }
+
+            if(this.vRam.drawRow(registerX,registerY+row,extendedMode)){
+                this.vReg[0xF] = 1;
+            }
+        }
+    }
+
 
 }
 
