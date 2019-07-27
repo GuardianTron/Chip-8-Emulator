@@ -22,10 +22,30 @@ class Chip8{
         //set up vital register
         this.vReg = new Unit8Array(16);
         this.callStack = new Array(16); //allow for changing size
-        this.i = 0x200; //memory address register - most programs start at this memory location
+        this._i = 0x200; //memory address register - most programs start at this memory location
         this.sp = 0; //stack pointer
-        this.pc = 0; //program counter
+        this._pc = 0; //program counter
         this._incrementPC = true; //increment the program counter -- set to false by certain instructions such as skips
+    }
+
+    get i(){
+        return this._i;
+    }
+
+    set i(addr){
+        this._testRamAddress(addr);
+        this._i = addr;
+    }
+
+    get pc(){
+        return this._pc;
+    }
+
+    set pc(addr){
+        if(addr >= 4096){
+            addr = 0;
+        }
+        this._pc = addr;
     }
 
     _testRamAddress(addr){
@@ -53,14 +73,12 @@ class Chip8{
 
     /** JP */
     jump(addr){
-        this._testRamAddress(addr);
         this.pc = addr;
         this._incrementPC = false;
     }
 
     /** CALL */
     call(addr){
-        this._testRamAddress(addr);
         this.sp++;
         this.callStack[this.sp] = this.pc;
         this.pc = addr;
@@ -158,14 +176,12 @@ class Chip8{
 
     /** LD I, addr -- load a 12 bit memory address into adress register I*/
     loadIAddress(addr){
-       this._testRamAddress();
         this.i = addr;
     }
 
     /** JP V0, addr -- jump to location V0 + addr */
     jumpV0(addr){
         addr = addr + this.vReg[0];
-        this._testRamAddress(addr);
         this.pc = addr;
         this._incrementPC = false;
     }
