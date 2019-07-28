@@ -282,7 +282,23 @@ class Chip8{
         this.vReg[registerX] = this.dt;
     }
 
-
+    /** LD Vx, K -- pause until a key is pressed and store value in register Vx
+     *  Current implementation simply spins the processor polling for a key press.
+     *  Will detect lowest value first. May need to refactor to take key pressed order
+     *  into account.
+     */
+    loadKeyIntoRegister(registerX){
+        //go through keys until pressed one is found
+        //don't increment program counter if none found
+        this._incrementPC = false;
+        for(let i = 0; i < this.pressedKeys.length; i++){
+            if(this.pressedKeys[i]){
+                this.vReg[registerX] = i;
+                this._incrementPC = true;
+                break;
+            }
+        }
+    }
 
 
 
