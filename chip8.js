@@ -326,6 +326,11 @@ class Chip8{
     }
 
 
+    /** LD ST, Vx  -- load value in register x into sound timer */
+    loadRegisterIntoSoundTimer(registerX){
+        this.st = this.vReg[registerX];
+    }
+
 
 
     
