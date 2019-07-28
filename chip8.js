@@ -25,6 +25,8 @@ class Chip8{
         this._i = 0x200; //memory address register - most programs start at this memory location
         this.sp = 0; //stack pointer
         this._pc = 0; //program counter
+        this._dt = 0; //delay timer
+        this._st = 0; //sound timer
         this._incrementPC = true; //increment the program counter -- set to false by certain instructions such as skips
 
         //array of currently down keys - true if pressed 
@@ -54,6 +56,14 @@ class Chip8{
             addr = 0;
         }
         this._pc = addr;
+    }
+
+    get dt(){
+        return this._dt;
+    }
+
+    set dt(value){
+        this._dt = Math.clamp(value,0,255);
     }
 
     _testRamAddress(addr){
@@ -242,6 +252,13 @@ class Chip8{
             this._skipInstruction();
         }
     }
+
+    /** LD Vx, Dt -- Load value in delay timer into Vx */
+    loadDelayTimerIntoRegister(registerX){
+        this.vReg[registerX] = this.dt;
+    }
+
+
 
 
 
