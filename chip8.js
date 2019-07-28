@@ -76,18 +76,38 @@ class Chip8{
 
     set dt(value){
         //only set up new timer if not already an active timer
-        let setNewTimer = this._dt !=0;
-        let timerId; //used for canceling timer once dt hits zero
+        let startNewTimer = this._dt == 0;
         this._dt = Math.clamp(value,0,255);
-        if(this._dt > 0 && setNewTimer){
+        if(startNewTimer){
+            this._setUpTimer("dt");
+        }
+
+    }
+
+    get st(){
+        return this._st;
+    }
+
+    set st(value){
+        //only set up new timer if now already an active timer
+        let startNewTimer = this._st == 0;
+        this._st = Math.clamp(value,0,255);
+        if(startNewTimer){
+            this._setUpTimer("st");
+        }
+
+    }
+
+    _setUpTimer(registerName){
+        let timeId; //used for canceling the timer once register hits zero
+        if(this[registerName] > 0){
             timerId = setInterval(()=>{
-                this.dt--;
-                if(this.dt == 0){
+                this[registerName]--;
+                if(this[registerName] == 0){
                     clearInterval(timerId);
                 }
             },Math.floor(1000/60));
         }
-
     }
 
     _testRamAddress(addr){
@@ -304,6 +324,7 @@ class Chip8{
     loadRegisterIntoDelayTimer(registerX){
         this.dt = this.vReg[registerX];
     }
+
 
 
 
