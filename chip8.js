@@ -331,6 +331,11 @@ class Chip8{
         this.st = this.vReg[registerX];
     }
 
+    /** LD F,Vx -- set I to the value of I and register X */
+    addIandRegisterX(registerX){
+        this.i += this.vReg[registerX];
+    }
+
 
 
     
