@@ -300,6 +300,11 @@ class Chip8{
         }
     }
 
+    /** LD DT, Vx.  Load value in register X into the delay timer */
+    loadRegisterIntoDelayTimer(registerX){
+        this.dt = this.vReg[registerX];
+    }
+
 
 
     
