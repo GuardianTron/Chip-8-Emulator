@@ -38,6 +38,18 @@ class Chip8{
         return this._pressedKeys;
     }
 
+    setKey(key){
+        this._pressedKeys[key] = true;
+    }
+
+    unsetKey(key){
+        this._presedKeys[key] = false;
+    }
+
+    clearKeys(){
+        this._pressedKeys.fill(false);
+    }
+
     get i(){
         return this._i;
     }
@@ -269,6 +281,10 @@ class Chip8{
     loadDelayTimerIntoRegister(registerX){
         this.vReg[registerX] = this.dt;
     }
+
+
+
+
 
     
 
