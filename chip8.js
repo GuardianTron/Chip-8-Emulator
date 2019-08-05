@@ -490,6 +490,12 @@ class Chip8{
         }
     }
 
+    /** LD Vx,[I] -- store memory starting at I into memory */
+    loadMemoryIntoRegisters(registerX){
+        for(let reg = 0; reg <= registerX; reg++){
+            this.vReg[reg] = this.ram[this.i + reg];
+        }
+    }
 
 
 
