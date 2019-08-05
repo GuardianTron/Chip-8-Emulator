@@ -1,4 +1,129 @@
 export {Chip8,VRam}
+
+//chip 8 8 bit system sprites
+/** @todo -- consider refactoring into separate data file */
+const sprites8Bit = new Unit8Array(60);
+sprites8Bit.append = function(){
+    let index = -1;
+    return function(row){
+       index++;
+       this[index] = row; 
+    }
+}();
+
+//zero
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x90);
+sprites8Bit.append(0x90);
+sprites8Bit.append(0x90);
+sprites8Bit.append(0xF0);
+
+//one
+sprites8Bit.append(0x20);
+sprites8Bit.append(0x60);
+sprites8Bit.append(0x20);
+sprites8Bit.append(0x20);
+sprites8Bit.append(0x70);
+
+//two
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x10);
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x80);
+sprites8Bit.append(0xF0);
+
+//three
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x10);
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x10);
+sprites8Bit.append(0xF0);
+
+//four
+sprites8Bit.append(0x90);
+sprites8Bit.append(0x90);
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x10);
+sprites8Bit.append(0x10);
+
+//five
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x80);
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x10);
+sprites8Bit.append(0xF0);
+
+//six
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x80);
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x90);
+sprites8Bit.append(0xF0);
+
+//seven
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x10);
+sprites8Bit.append(0x20);
+sprites8Bit.append(0x40);
+sprites8Bit.append(0x40);
+
+//eight
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x90);
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x90);
+sprites8Bit.append(0xF0);
+
+//nine
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x90);
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x10);
+sprites8Bit.append(0xF0);
+
+//A
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x90);
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x90);
+sprites8Bit.append(0x90);
+
+//B
+sprites8Bit.append(0xE0);
+sprites8Bit.append(0x90);
+sprites8Bit.append(0xE0);
+sprites8Bit.append(0x90);
+sprites8Bit.append(0xE0);
+
+//C
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x80);
+sprites8Bit.append(0x80);
+sprites8Bit.append(0x80);
+sprites8Bit.append(0xF0);
+
+//D
+sprites8Bit.append(0xE0);
+sprites8Bit.append(0x90);
+sprites8Bit.append(0x90);
+sprites8Bit.append(0x90);
+sprites8Bit.append(0xE0);
+
+//E
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x80);
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x80);
+sprites8Bit.append(0xF0);
+
+//F
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x80);
+sprites8Bit.append(0xF0);
+sprites8Bit.append(0x80);
+sprites8Bit.append(0x80);
+
+
 class Chip8{
 
     constructor(rom){
@@ -8,6 +133,9 @@ class Chip8{
 
         
         this.ram = new Uint8Array(4096);
+        //copy 8 bit fonts into ram at start
+        this.ram.set(sprites8Bit);    
+
         //copy rom into ram
         this.ram.set(rom.slice(0,4096),0x200);
         
@@ -335,6 +463,7 @@ class Chip8{
     addIandRegisterX(registerX){
         this.i += this.vReg[registerX];
     }
+
 
 
 
