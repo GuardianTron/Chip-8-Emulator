@@ -464,6 +464,12 @@ class Chip8{
         this.i += this.vReg[registerX];
     }
 
+    /** LD F, Vx -- set I to location of sprite for digit Vx */
+    loadSpriteLocation(digit,registerX){
+        //sprites are 5 bytes long and start at memory location 0
+        this.vReg[registerX] = digit*5;
+    }
+
 
 
 
