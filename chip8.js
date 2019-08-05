@@ -470,6 +470,19 @@ class Chip8{
         this.i = this.vReg[registerX]*5;
     }
 
+    /** LD B, Vx -- Store BCD representaion of Vx in memory locations I (hundreds), I + 1 (tens), I+2 (ones) */
+    storeBCD(registerX){
+        let num = this.vReg[registerX];
+        let ones = num % 10;
+        let tens = Math.floor( (num % 100 - ones)/10 );
+        let hundreds = Math.floor(num / 100);
+        this.vRam[this.i] = hundreds;
+        this.vRam[this.i + 1] = tens;
+        this.vRam[this.i + 2] = ones;
+
+
+    }
+
 
 
 
