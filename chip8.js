@@ -476,11 +476,18 @@ class Chip8{
         let ones = num % 10;
         let tens = Math.floor( (num % 100 - ones)/10 );
         let hundreds = Math.floor(num / 100);
-        this.vRam[this.i] = hundreds;
-        this.vRam[this.i + 1] = tens;
-        this.vRam[this.i + 2] = ones;
+        this.ram[this.i] = hundreds;
+        this.ram[this.i + 1] = tens;
+        this.ram[this.i + 2] = ones;
 
 
+    }
+
+    /** LD [I], Vx -- Store registers V0 - Vx in memory starting at location I */
+    loadRegisterIntoMemory(registerX){
+        for(let reg = 0; reg <= registerX; reg++){
+            this.ram[this.i + reg] = this.vReg[reg];
+        }
     }
 
 
