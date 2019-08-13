@@ -355,6 +355,17 @@ class Chip8{
                 break;
 
             case 0xE:
+                switch(byte){
+                    case 0x9E:
+                        this.skipKeyPressed(regX);
+                        break;
+                    case 0xA1:
+                        this.skipKeyNotPressed(regX);
+                        break;
+                    default:
+                        console.log(`Unsupported instruction for opcode E ${this.currentInstruction.toString(16)}`);
+                }
+
                 break;
 
             case 0xF:
