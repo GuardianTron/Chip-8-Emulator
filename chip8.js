@@ -260,7 +260,7 @@ class Chip8{
                         this.returnFromSubroutine();
                         break;
                     default:
-                        console.log(`Unsupported SYS instuction ${this.currentInstruction} `)
+                        console.log(`Unsupported SYS instuction ${this.currentInstruction.toString(16)} `)
                 }
 
                 break;
