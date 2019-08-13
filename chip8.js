@@ -335,18 +335,23 @@ class Chip8{
                 break;
 
             case 0x9:
+                this.skipNotEqualRegisters(regX,regY);
                 break;
 
             case 0xA:
+                this.loadIAddress(address);
                 break;
+            
             case 0xB:
+                this.jumpV0(address);
                 break;
 
             case 0xC:
+                this.random(regX,byte);
                 break;
 
             case 0xD:
-
+                this.draw(regX,regY,bottomNibble);
                 break;
 
             case 0xE:
