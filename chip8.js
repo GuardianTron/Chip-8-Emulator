@@ -123,7 +123,7 @@ sprites8Bit.append(0xF0);
 sprites8Bit.append(0x80);
 sprites8Bit.append(0x80);
 
-
+const programOffset = 0x200;
 class Chip8{
 
     constructor(rom){
@@ -137,7 +137,7 @@ class Chip8{
         this.ram.set(sprites8Bit);    
 
         //copy rom into ram
-        this.ram.set(rom.slice(0,4096),0x200);
+        this.ram.set(rom.slice(0,4096),programOffset);
         
         /**
          * Chip 8 roms are stored in big endian order.  
@@ -157,9 +157,14 @@ class Chip8{
         this._st = 0; //sound timer
         this._incrementPC = true; //increment the program counter -- set to false by certain instructions such as skips
 
+        this._currentInstruction; //holds the currently processed instruction
         //array of currently down keys - true if pressed 
         this._pressedKeys = new Array(16);
         this._pressedKeys.fill(false);
+    }
+
+    get _currentInstruction(){
+        return this._currentInstruction;
     }
 
     get pressedKeys(){
@@ -226,6 +231,17 @@ class Chip8{
 
     }
 
+    executeCycle(){
+        //Instructions are two bytes long
+        //Start at offset where program is loaded and then double the program counter
+        //to get hight byte
+        let instructionStartAddress = programOffset + 2 * this.pc;
+        //high byte
+        this._currentInstruction = this.ram[instructionStartAddress] << 8;
+        //append low byte
+        this._currentInstruction += this.ram[instructionStartAddress + 1];
+        let opcode = this.current
+    }
     _setUpTimer(registerName){
         let timeId; //used for canceling the timer once register hits zero
         if(this[registerName] > 0){
