@@ -233,9 +233,7 @@ class Chip8{
 
     fetch(){
          //Instructions are two bytes long
-        //Start at offset where program is loaded and then double the program counter
-        //to get hight byte
-        let instructionStartAddress = programOffset + 2 * this.pc;
+        let instructionStartAddress = this.pc;
         //high byte
         let instruction = this.ram[instructionStartAddress] << 8;
         //append low byte
@@ -332,9 +330,9 @@ class Chip8{
         }
     }
 
-    //increment the program counter by 2
+    //increment the program counter by 2 instructions
     _skipInstruction(){
-        this.pc +=2;
+        this.pc +=4;
         this._incrementPC = false;
     }
 
