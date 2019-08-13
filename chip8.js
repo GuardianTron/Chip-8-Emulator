@@ -246,8 +246,15 @@ class Chip8{
         this._currentInstruction = this.fetch();
         
         //get opcode - highest nibble=
+        //parse for possible instruction values
         let opcode = this._currentInstruction >> 12;
         let bottom3Nibbles = this._currentInstruction & 0xFFF;
+        let address = bottom3Nibbles;
+        let regX = bottom3Nibbles >> 8;
+        let byte = bottom3Nibbles & 0xFF;
+        let regY = bottom3Nibble & 0XF0;
+
+
         switch(opcode){
             case 0x0:
                 switch(bottom3Nibbles){
@@ -258,21 +265,26 @@ class Chip8{
                         this.returnFromSubroutine();
                         break;
                     default:
-                        console.log(`Unsupported SYS instuction ${this.currentInstruction.toString(16)} `)
+                        console.log(`Unsupported SYS instuction ${this.currentInstruction.toString(16)} `);
                 }
 
                 break;
 
             case 0x1:
                 break;
+                this.jump(address);
 
             case 0x2:
+                this.call(address);
                 break;
             
             case 0x3:
+                this.skipEqualValue(regX,byte);
+                
                 break;
 
             case 0x4:
+                this.skipNotEqualValue(regX, byte);
                 break;
             case 0x5:
                 break;
