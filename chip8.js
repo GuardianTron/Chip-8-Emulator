@@ -251,6 +251,11 @@ class Chip8{
         return instruction;
     }
 
+    execute = ()=>{
+        this.executeCycle();
+        setTimeout(this.execute,1000/this._clockSpeed);
+    }
+
     executeCycle = ()=>{
         //make sure this refers to chip8 when called from setTimeout
         this._currentInstruction = this.fetch();
@@ -417,7 +422,6 @@ class Chip8{
                 if(this._incrementPC){
                     this.pc+=2; //two byte instruction
                 }
-                setTimeout(this.executeCycle(),1000/this._clockSpeed);
         }
 
         
