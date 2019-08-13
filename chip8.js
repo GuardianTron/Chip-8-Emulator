@@ -240,7 +240,63 @@ class Chip8{
         this._currentInstruction = this.ram[instructionStartAddress] << 8;
         //append low byte
         this._currentInstruction += this.ram[instructionStartAddress + 1];
-        let opcode = this.current
+
+        //get opcode - highest nibble=
+        let opcode = this._currentInstruction >> 12;
+        let bottom3Nibbles = this._currentInstruction & 0xFFF;
+        switch(opcode){
+            case 0x0:
+
+                break;
+
+            case 0x1:
+                break;
+
+            case 0x2:
+                break;
+            
+            case 0x3:
+                break;
+
+            case 0x4:
+                break;
+            case 0x5:
+                break;
+
+            case 0x6:
+
+                break;
+
+            case 0x7:
+                break;
+
+            case 0x8:
+                break;
+
+            case 0x9:
+                break;
+
+            case 0xA:
+                break;
+            case 0xB:
+                break;
+
+            case 0xC:
+                break;
+
+            case 0xD:
+
+                break;
+
+            case 0xE:
+                break;
+
+            case 0xF:
+                break;
+        }
+
+        
+
     }
     _setUpTimer(registerName){
         let timeId; //used for canceling the timer once register hits zero
