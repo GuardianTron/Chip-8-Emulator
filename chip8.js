@@ -252,7 +252,8 @@ class Chip8{
         let address = bottom3Nibbles;
         let regX = bottom3Nibbles >> 8;
         let byte = bottom3Nibbles & 0xFF;
-        let regY = bottom3Nibble & 0XF0;
+        let regY = bottom3Nibbles & 0XF0;
+        let bottomNibble = bottom3Nibbles & 0xF;
 
 
         switch(opcode){
@@ -286,14 +287,17 @@ class Chip8{
             case 0x4:
                 this.skipNotEqualValue(regX, byte);
                 break;
+            
             case 0x5:
+                this.skipEqualRegisters(regX,regY);
                 break;
 
             case 0x6:
-
+                this.loadRegisterByte(regX,byte);
                 break;
 
             case 0x7:
+                this.addRegisterToByte(regX,byte);
                 break;
 
             case 0x8:
