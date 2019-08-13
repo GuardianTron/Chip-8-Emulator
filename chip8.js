@@ -163,7 +163,7 @@ class Chip8{
         this._pressedKeys.fill(false);
     }
 
-    get _currentInstruction(){
+    get currentInstruction(){
         return this._currentInstruction;
     }
 
@@ -231,21 +231,37 @@ class Chip8{
 
     }
 
-    executeCycle(){
-        //Instructions are two bytes long
+    fetch(){
+         //Instructions are two bytes long
         //Start at offset where program is loaded and then double the program counter
         //to get hight byte
         let instructionStartAddress = programOffset + 2 * this.pc;
         //high byte
-        this._currentInstruction = this.ram[instructionStartAddress] << 8;
+        let instruction = this.ram[instructionStartAddress] << 8;
         //append low byte
-        this._currentInstruction += this.ram[instructionStartAddress + 1];
+        instruction += this.ram[instructionStartAddress + 1];
+        return instruction;
+    }
 
+    executeCycle(){
+       
+        this._currentInstruction = this.fetch();
+        
         //get opcode - highest nibble=
         let opcode = this._currentInstruction >> 12;
         let bottom3Nibbles = this._currentInstruction & 0xFFF;
         switch(opcode){
             case 0x0:
+                switch(bottom3Nibbles){
+                    case 0x0E0:
+                        this.clearScreen();
+                        break;
+                    case 0x0EE:
+                        this.returnFromSubroutine();
+                        break;
+                    default:
+                        console.log(`Unsupported SYS instuction ${this.currentInstruction} `)
+                }
 
                 break;
 
