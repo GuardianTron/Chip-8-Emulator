@@ -369,6 +369,38 @@ class Chip8{
                 break;
 
             case 0xF:
+                switch(byte){
+                    case 0x07:
+                        this.loadDelayTimerIntoRegister(regX);
+                        break;
+                    case 0x0A:
+                        this.loadKeyIntoRegister(regX);
+                        break;
+                    case 0x15:
+                        this.loadRegisterIntoDelayTimer(regX);
+                        break;
+                    case 0x18:
+                        this.loadRegisterIntoSoundTimer(regX);
+                        break;
+                    case 0x1E:
+                        this.addIandRegisterX(regX);
+                        break;
+                    case 0x29:
+                        this.loadSpriteLocation(regX);
+                        break;
+                    case 0x33:
+                        this.storeBCD(regX);
+                        break;
+                    case 0x55:
+                        this.loadRegisterIntoMemory(regX);
+                        break;
+                    case 0x65:
+                        this.loadMemoryIntoRegisters(regX);
+                        break;
+                    default:
+                        console.log(`Unsupported instruction for opcode F ${this.currentInstruction.toString(16)}`);
+
+                }
                 break;
         }
 
