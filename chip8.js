@@ -301,6 +301,37 @@ class Chip8{
                 break;
 
             case 0x8:
+                switch(bottomNibble){
+                    case 0x0:
+                        this.loadRegisterYIntoRegisterX(regX,regY);
+                        break;
+                    case 0x1:
+                        this.orRegisterXRegisterY(regX,regY);
+                        break;
+                    case 0x2:
+                        this.andRegisterXRegisterY(regX,regY);
+                        break;
+                    case 0x3:
+                        this.xorRegisterXRegisterY(regX,regY);
+                        break;
+                    case 0x4:
+                        this.add(regX,regY);
+                        break;
+                    case 0x5:
+                        this.sub(regX,regY);
+                        break;
+                    case 0x6:
+                        this.shiftRight(regX);
+                        break;
+                    case 0x7:
+                        this.subNegative(regX,regY);
+                        break;
+                    case 0xE:
+                        this.shiftLeft(regX);
+                        break;
+                    default:
+                        console.log(`Unsupported instruction for opcode 0x8nnn: ${this.currentInstruction.toString(16)}`);
+                }
                 break;
 
             case 0x9:
@@ -434,6 +465,16 @@ class Chip8{
         let regY = this.vReg[registerY];
         this.vReg[registerX] = regX ^ regY;
 
+    }
+
+    /** ADD Vx, Vy -- Register X = Register X + Register Y -- Vf == (Vx + Vy) > 255 */
+
+    add(registerX,registerY){
+        let sum = this.vReg[registerX] + this.vReg[registerY];
+        if(sum > 255){
+            this.vReg[0xF] = 1;
+        }
+        this.vReg[registerX] = sum;
     }
 
     /** SUB Vx,Vy -- Register X = Register X - Register Y -- Vf = Vx>Vy*/
