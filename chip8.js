@@ -157,10 +157,20 @@ class Chip8{
         this._st = 0; //sound timer
         this._incrementPC = true; //increment the program counter -- set to false by certain instructions such as skips
 
+        this._clockSpeed = 400; //default to 400hz
+
         this._currentInstruction; //holds the currently processed instruction
         //array of currently down keys - true if pressed 
         this._pressedKeys = new Array(16);
         this._pressedKeys.fill(false);
+    }
+    get _clockSpeed(){
+        return this._clockSpeed;
+    }
+
+    /** Speed in hz */
+    set _clockSpeed(speed){
+        this._clockSpeed = speed;
     }
 
     get currentInstruction(){
@@ -241,8 +251,8 @@ class Chip8{
         return instruction;
     }
 
-    executeCycle(){
-       
+    executeCycle = ()=>{
+        //make sure this refers to chip8 when called from setTimeout
         this._currentInstruction = this.fetch();
         
         //get opcode - highest nibble=
@@ -402,6 +412,12 @@ class Chip8{
 
                 }
                 break;
+
+                //increment the program counter if not skipped
+                if(this._incrementPC){
+                    this.pc+=2; //two byte instruction
+                }
+                setTimeout(this.executeCycle(),1000/this._clockSpeed);
         }
 
         
