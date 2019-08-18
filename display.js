@@ -65,6 +65,15 @@ class CanvasDisplay{
 
         }
 
+        //clear the display
+        this._displayContext.fillStyle = this._frameColor;
+        this._displayContext.fillRect(0,0,this._canvas.width,this._canvas.height);
+        //transfer blit buffer to screen centerd
+        let destX = (this._canvas.width - this._blitCanvas.width)/2;
+        let destY = (this._canvas.height - this._blitCanvas.height)/2;
+        this._displayContext.putImageData(this._blitContext.getImageData(),destX,destY);
+        
+
 
     }
 
