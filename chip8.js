@@ -772,6 +772,25 @@ class VRam{
     }
 
     /**
+     * 
+     * @param {Number} x 
+     * @param {Number} y 
+     * @returns {Boolean}
+     */
+
+    getPixel(x,y){  
+        //get requested byte
+        let arrayPosition = y * this.ram.width + Math.floor(x/8);
+        let byte = this.ram[arrayPosition];
+        let bitPosition = x % 8;
+        let bit = byte & (0b10000000 >>> bitPosition);
+        return bit >>> bitPosition; 
+
+
+        
+    }
+
+    /**
      * Draws a row to the screen memory starting at coordinates  x, and y.
      * Rows are presented by either a single byte in normal mode and two bytes
      * in extended mode
@@ -780,6 +799,7 @@ class VRam{
      * @param {*} rowData - one or two bytes of pixel data dependent upon extended mode
      * @param {*} useExtended - Even in extended mode, standard sprites can be used. If true and in extended mode, assume 16 bit row
      */
+
 
     drawRow(x,y,rowData, useExtended = false){
         //regular chip8 mode
