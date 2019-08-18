@@ -741,6 +741,14 @@ class VRam{
 
     }
 
+    get width(){
+        return this._screenWidth;
+    }
+
+    get height(){
+        return this._screenHeight;
+    }
+
     enableExtendedMode(){
         this._extendedMode = true;
         this._screenHeight = SUPER_HEIGHT;
