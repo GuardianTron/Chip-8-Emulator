@@ -780,7 +780,7 @@ class VRam{
 
     getPixel(x,y){  
         //get requested byte
-        let arrayPosition = y * this.ram.width + Math.floor(x/8);
+        let arrayPosition = y * RAM_WIDTH_BYTES + Math.floor(x/8);
         let byte = this.ram[arrayPosition];
         let bitPosition = x % 8;
         let bit = byte & (0b10000000 >>> bitPosition);
