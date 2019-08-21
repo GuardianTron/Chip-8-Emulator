@@ -42,13 +42,14 @@ export class Chip8Emulator{
     loadRom(romURL){
         fetch(romURL).then((response) => {
             if(response.ok){
-                return response.blob();
+                console.log("Rom downloaded");
+                return response.arrayBuffer();
             }
             throw new Error();
-        }).then((blob)=>{
-            return blob.arrayBuffer();
         }).then((buffer)=>{
-            this.rom = Uint8Array(buffer);
+            console.log("Converting to array");
+            this.rom = new Uint8Array(buffer);
+            console.log(this.rom);
             this.startRom();
         }).catch((reason)=>{
             console.log("The given rom could not be loaded.");

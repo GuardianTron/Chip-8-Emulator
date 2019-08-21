@@ -150,7 +150,7 @@ export default class Chip8{
     }
 
     loadRom(rom){
-        if(typeof rom != Uint8Array){
+        if(!(rom instanceof Uint8Array)){
             throw new Error("Roms must be an Uint8Array");
         }
 
