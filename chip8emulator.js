@@ -51,9 +51,9 @@ export class Chip8Emulator{
             this.rom = new Uint8Array(buffer);
             console.log(this.rom);
             this.startRom();
-        }).catch((reason)=>{
+        })/*.catch((reason)=>{
             console.log("The given rom could not be loaded.");
-        });
+        })*/;
         
     }
 

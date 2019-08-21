@@ -171,7 +171,7 @@ export default class Chip8{
          this.callStack = new Array(16); //allow for changing size
          this._i = 0x200; //memory address register - most programs start at this memory location
          this.sp = 0; //stack pointer
-         this._pc = 0; //program counter
+         this._pc = 0x200; //program counter
          this._dt = 0; //delay timer
          this._st = 0; //sound timer
          this._incrementPC = true; //increment the program counter -- set to false by certain instructions such as skips
@@ -225,7 +225,7 @@ export default class Chip8{
 
     set pc(addr){
         if(addr >= 4096){
-            addr = 0;
+            addr = 0x200;
         }
         this._pc = addr;
     }
@@ -251,7 +251,13 @@ export default class Chip8{
     set st(value){
         //only set up new timer if now already an active timer
         let startNewTimer = this._st == 0;
-        this._st = Math.clamp(value,0,255);
+        if(value > 255){
+            value = 255;
+        }
+        else if(value < 0){
+            value = 0;
+        }
+        this._st = value;
         if(startNewTimer){
             this._setUpTimer("st");
         }
@@ -274,6 +280,7 @@ export default class Chip8{
     }
 
     executeCycle = ()=>{
+        this._incrementPC = true;
         //make sure this refers to chip8 when called from setTimeout
         this._currentInstruction = this.fetch();
         
@@ -287,7 +294,7 @@ export default class Chip8{
         let regY = bottom3Nibbles & 0XF0;
         let bottomNibble = bottom3Nibbles & 0xF;
 
-
+        console.log(`${this.currentInstruction.toString(16)} ${this.pc}`);
         switch(opcode){
             case 0x0:
                 switch(bottom3Nibbles){
@@ -435,17 +442,18 @@ export default class Chip8{
                 }
                 break;
 
-                //increment the program counter if not skipped
-                if(this._incrementPC){
-                    this.pc+=2; //two byte instruction
-                }
+                
+        }
+        //increment the program counter if not skipped
+        if(this._incrementPC){
+            this.pc+=2; //two byte instruction
         }
 
         
 
     }
     _setUpTimer(registerName){
-        let timeId; //used for canceling the timer once register hits zero
+        let timerId; //used for canceling the timer once register hits zero
         if(this[registerName] > 0){
             timerId = setInterval(()=>{
                 this[registerName]--;
@@ -615,7 +623,7 @@ export default class Chip8{
         //set VF to zero.  Change to one if a pixel is unset during rendering.
         this.vReg[0xF] = 0;
         //create start address
-        let extendedMode = this.vRam.extendedMode && rows == 0; //determine whether or not to use
+        let extendedMode = this.vram.extendedMode && rows == 0; //determine whether or not to use
         if(extendedMode){
             rows = 16;  //all sprites are 16 x 16 for extended drawing mode    
         } 
@@ -633,7 +641,7 @@ export default class Chip8{
                 spriteRow = this.ram[this.i];
             }
 
-            if(this.vRam.drawRow(registerX,registerY+row,extendedMode)){
+            if(this.vram.drawRow(registerX,registerY+row,extendedMode)){
                 this.vReg[0xF] = 1;
             }
         }
@@ -836,11 +844,11 @@ class VRam{
              * by 8 - offset for the right most section.
              */
             let oldByte = this.ram[position];
-            this.ram[position] = this.ram[position] ^ (byte >>> byteOffset);
+            this.ram[position] = this.ram[position] ^ (rowData >>> byteOffset);
             //see if bit flipped from set to unset
             let bitUnset = this._testBitUnset(oldByte,this.ram[position]);
             
-            if(byteOffest !==0 ){
+            if(byteOffset !==0 ){
                 //wrap second byte back to start of screen if outside of it
                 //otherwise, draw to next adjacent byte
                 if(xByteColumn >= this._screenWidth/8){
@@ -850,7 +858,7 @@ class VRam{
                     position++;
                 }
                 oldByte = this.ram[position];
-                this.ram[position] = this.ram[position] ^ (byte << (8-byteOffset));
+                this.ram[position] = this.ram[position] ^ (rowData << (8-byteOffset));
                 //only test for unset bit if another bit had not been fliped off
                 if(!bitUnset){
                     bitUnset = this._testBitUnset(oldByte,this.ram[position]);
