@@ -144,6 +144,8 @@ class Chip8{
         this._currentInstruction; //holds the currently processed instruction
         //array of currently down keys - true if pressed 
         this._pressedKeys = new Array(16);
+
+        this.reset();
         
     }
 
