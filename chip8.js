@@ -164,12 +164,12 @@ class Chip8{
         this._pressedKeys = new Array(16);
         this._pressedKeys.fill(false);
     }
-    get _clockSpeed(){
+    get clockSpeed(){
         return this._clockSpeed;
     }
 
     /** Speed in hz */
-    set _clockSpeed(speed){
+    set clockSpeed(speed){
         this._clockSpeed = speed;
     }
 
@@ -262,10 +262,10 @@ class Chip8{
         
         //get opcode - highest nibble=
         //parse for possible instruction values
-        let opcode = this._currentInstruction >> 12;
+        let opcode = this._currentInstruction >>> 12;
         let bottom3Nibbles = this._currentInstruction & 0xFFF;
         let address = bottom3Nibbles;
-        let regX = bottom3Nibbles >> 8;
+        let regX = bottom3Nibbles >>> 8;
         let byte = bottom3Nibbles & 0xFF;
         let regY = bottom3Nibbles & 0XF0;
         let bottomNibble = bottom3Nibbles & 0xF;
@@ -819,7 +819,7 @@ class VRam{
              * by 8 - offset for the right most section.
              */
             let oldByte = this.ram[position];
-            this.ram[position] = this.ram[position] ^ (byte >> byteOffset);
+            this.ram[position] = this.ram[position] ^ (byte >>> byteOffset);
             //see if bit flipped from set to unset
             let bitUnset = this._testBitUnset(oldByte,this.ram[position]);
             
