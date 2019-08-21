@@ -1,8 +1,10 @@
-import Chip8 from "./chip8.js"
-import CanvasDisplay from "./display.js"
-import KeyboardInput from "./input.js"
+import { Chip8 } from "./chip8.js"
+import { CanvasDisplay } from "./display.js"
+import {KeyboardInput} from "./input.js"
 
-class Chip8Emulator{
+export {Chip8Emulator as default};
+
+export class Chip8Emulator{
 
     constructor(canvas){
         this.cpu = new Chip8();

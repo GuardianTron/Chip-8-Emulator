@@ -1,4 +1,5 @@
-class KeyboardInput{
+import { Chip8 } from "./chip8.js";
+export class KeyboardInput{
     
     constructor(chip8){
         this.chip8 = chip8;
@@ -8,7 +9,7 @@ class KeyboardInput{
 
     mapKey(keycode, chip8Key){
         //remove old key code
-        if(this.chip8toPhysical.hasOwnKey(chip8Key)){
+        if(this.chip8toPhysical.hasOwnProperty(chip8Key)){
             let oldKeycode = this.chip8toPhysical[chip8Key];
             delete this.physicalToChip8[oldKeycode];
         }
@@ -18,7 +19,7 @@ class KeyboardInput{
     }
 
     onkeydown = (event) => {
-        if(this.physicalToChip8.hasOwnKey(event.keyCode)){
+        if(this.physicalToChip8.hasOwnProperty(event.keyCode)){
             let chip8Key = this.physicalToChip8[event.keyCode];
             this.chip8.setKey(chip8Key);
         }

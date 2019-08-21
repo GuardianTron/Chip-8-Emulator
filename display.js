@@ -1,6 +1,6 @@
-import VRam from "./chip8.js";
+export {CanvasDisplay as default};
 
-class CanvasDisplay{
+export class CanvasDisplay{
 
     constructor(canvasElement,vram){
         this._vram = vram; 

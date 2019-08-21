@@ -1,8 +1,8 @@
-export {Chip8,VRam}
 
+export {Chip8, VRam};
 //chip 8 8 bit system sprites
 /** @todo -- consider refactoring into separate data file */
-const sprites8Bit = new Unit8Array(60);
+const sprites8Bit = new Uint8Array(60);
 sprites8Bit.append = function(){
     let index = -1;
     return function(row){
@@ -124,7 +124,7 @@ sprites8Bit.append(0x80);
 sprites8Bit.append(0x80);
 
 const programOffset = 0x200;
-class Chip8{
+export default class Chip8{
 
     constructor(){
        
@@ -167,7 +167,7 @@ class Chip8{
 
     reset(){
          //set up vital register
-         this.vReg = new Unit8Array(16);
+         this.vReg = new Uint8Array(16);
          this.callStack = new Array(16); //allow for changing size
          this._i = 0x200; //memory address register - most programs start at this memory location
          this.sp = 0; //stack pointer
@@ -270,7 +270,7 @@ class Chip8{
 
     execute = ()=>{
         this.executeCycle();
-        setTimeout(this.execute,1000/this._clockSpeed);
+        window.setTimeout(this.execute,1000/this._clockSpeed);
     }
 
     executeCycle = ()=>{
@@ -753,7 +753,7 @@ class VRam{
          */
        
         this.disableExtendedMode();
-        this.ram = new Unit8Array(RAM_WIDTH_BYTES * RAM_HEIGHT);
+        this.ram = new Uint8Array(RAM_WIDTH_BYTES * RAM_HEIGHT);
 
 
     }
@@ -861,6 +861,7 @@ class VRam{
             return bitUnset;
 
         }
+    }
 
     _testBitUnset(oldColumn,newColumn,bytesPerColumn=1){
         let bitUnset = false;
