@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Mocha Java Chip Arcade</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <canvas id="emulator_screen" width="640" height="320"></canvas>
+        <script type="module">
+            import Chip8Emulator from  "./chip8emulator.js";
+
+            let canvas = document.getElementById("emulator_screen");
+            let emulator = new Chip8Emulator(canvas);
+
+        </script>
+    </body>
+</html>
