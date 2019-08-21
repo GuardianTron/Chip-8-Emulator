@@ -126,7 +126,28 @@ sprites8Bit.append(0x80);
 const programOffset = 0x200;
 class Chip8{
 
-    constructor(rom){
+    constructor(){
+       
+        
+        /**
+         * Chip 8 roms are stored in big endian order.  
+         * DataView is used to avoid issues with 16 bit access on 
+         * little endian systems.
+         */
+
+        this.vram = new VRam();
+
+       
+
+        this._clockSpeed = 400; //default to 400hz
+
+        this._currentInstruction; //holds the currently processed instruction
+        //array of currently down keys - true if pressed 
+        this._pressedKeys = new Array(16);
+        
+    }
+
+    loadRom(rom){
         if(typeof rom != Uint8Array){
             throw new Error("Roms must be an Uint8Array");
         }
@@ -138,32 +159,26 @@ class Chip8{
 
         //copy rom into ram
         this.ram.set(rom.slice(0,4096),programOffset);
-        
-        /**
-         * Chip 8 roms are stored in big endian order.  
-         * DataView is used to avoid issues with 16 bit access on 
-         * little endian systems.
-         */
 
-        this.vram = new VRam();
-
-        //set up vital register
-        this.vReg = new Unit8Array(16);
-        this.callStack = new Array(16); //allow for changing size
-        this._i = 0x200; //memory address register - most programs start at this memory location
-        this.sp = 0; //stack pointer
-        this._pc = 0; //program counter
-        this._dt = 0; //delay timer
-        this._st = 0; //sound timer
-        this._incrementPC = true; //increment the program counter -- set to false by certain instructions such as skips
-
-        this._clockSpeed = 400; //default to 400hz
-
-        this._currentInstruction; //holds the currently processed instruction
-        //array of currently down keys - true if pressed 
-        this._pressedKeys = new Array(16);
-        this._pressedKeys.fill(false);
+        this.reset();
     }
+
+    reset(){
+         //set up vital register
+         this.vReg = new Unit8Array(16);
+         this.callStack = new Array(16); //allow for changing size
+         this._i = 0x200; //memory address register - most programs start at this memory location
+         this.sp = 0; //stack pointer
+         this._pc = 0; //program counter
+         this._dt = 0; //delay timer
+         this._st = 0; //sound timer
+         this._incrementPC = true; //increment the program counter -- set to false by certain instructions such as skips
+
+         this._pressedKeys.fill(false);
+
+         this.vram.clearScreen();
+    }
+
     get clockSpeed(){
         return this._clockSpeed;
     }
