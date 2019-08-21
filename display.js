@@ -71,7 +71,7 @@ export class CanvasDisplay{
         //transfer blit buffer to screen centerd
         let destX = (this._canvas.width - this._blitCanvas.width)/2;
         let destY = (this._canvas.height - this._blitCanvas.height)/2;
-        this._displayContext.putImageData(this._blitContext.getImageData(),destX,destY);
+        this._displayContext.putImageData(this._blitContext.getImageData(0,0,this._blitCanvas.width,this._blitCanvas.height),destX,destY);
         
 
 

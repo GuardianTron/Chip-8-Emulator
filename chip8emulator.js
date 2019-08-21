@@ -2,7 +2,7 @@ import { Chip8 } from "./chip8.js"
 import { CanvasDisplay } from "./display.js"
 import {KeyboardInput} from "./input.js"
 
-export {Chip8Emulator as default};
+export {Chip8Emulator as default}
 
 export class Chip8Emulator{
 
