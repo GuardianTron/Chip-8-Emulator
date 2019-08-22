@@ -6,12 +6,30 @@
     </head>
     <body>
         <canvas id="emulator_screen" width="640" height="320"></canvas>
+        <div id="debug">
+            <pre id = "vram">
+
+            </pre>
+        </div>
         <script type="module">
             import Chip8Emulator from  "./chip8emulator.js";
 
             let canvas = document.getElementById("emulator_screen");
             let emulator = new Chip8Emulator(canvas);
-            emulator.loadRom("roms/chip8/UFO");
+            emulator.loadRom("roms/chip8/MAZE");
+            //add debug listeners
+            emulator.addCallback(function(cpu){
+                let vram = cpu.vram;
+                let display = document.getElementById('vram');
+                display.textContent = "";
+                for(let i = 0; i < vram.ram.length; i++){
+                    display.textContent += vram.ram[i].toString(2).padStart(8,'0');
+                    if(i%16 == 0 && i>=15){
+                        display.textContent += "\n";
+                    }
+                }
+            });
+            
 
         </script>
     </body>

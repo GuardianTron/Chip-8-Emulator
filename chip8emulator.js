@@ -13,8 +13,8 @@ export class Chip8Emulator{
 
     
         //set up key mapper
-        canvas.addEventListener("keydown",this.keyboardMapper.onkeydown);
-        canvas.addEventListener("keyup",this.keyboardMapper.onkeyup);
+        window.addEventListener("keydown",this.keyboardMapper.onkeydown);
+        window.addEventListener("keyup",this.keyboardMapper.onkeyup);
         this.keyboardMapper.mapKey(144,1);
         this.keyboardMapper.mapKey(111,2);
         this.keyboardMapper.mapKey(106,3);
@@ -62,6 +62,14 @@ export class Chip8Emulator{
         this.cpu.execute();
 
 
+    }
+
+    addCallback(func){
+        this.cpu.addCallback(func);
+    }
+
+    removeCallback(func){
+        this.cpu.removeCallback(func);
     }
     
 }

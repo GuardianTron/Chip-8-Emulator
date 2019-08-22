@@ -147,6 +147,7 @@ export default class Chip8{
 
         this.reset();
         
+        this._callbacks = new Array();
     }
 
     loadRom(rom){
@@ -168,8 +169,8 @@ export default class Chip8{
     reset(){
          //set up vital register
          this.vReg = new Uint8Array(16);
-         this.callStack = new Array(16); //allow for changing size
-         this._i = 0x200; //memory address register - most programs start at this memory location
+         this.callStack = new Uint16Array(256);
+         this._i = 0x200 //memory address register - most programs start at this memory location
          this.sp = 0; //stack pointer
          this._pc = 0x200; //program counter
          this._dt = 0; //delay timer
@@ -237,7 +238,13 @@ export default class Chip8{
     set dt(value){
         //only set up new timer if not already an active timer
         let startNewTimer = this._dt == 0;
-        this._dt = Math.clamp(value,0,255);
+        if(value < 0){
+            value = 0
+        }
+        else if(value > 255){
+            value = 255;
+        }
+        this._dt = value;
         if(startNewTimer){
             this._setUpTimer("dt");
         }
@@ -262,6 +269,15 @@ export default class Chip8{
             this._setUpTimer("st");
         }
 
+    }
+
+    addCallback(func){
+        this._callbacks.push(func);
+    }
+
+    removeCallback(func){
+        let index = this._callbacks.findIndex((element)=>{return func === element;});
+        this._callbacks.splice(index,1);
     }
 
     fetch(){
@@ -291,10 +307,10 @@ export default class Chip8{
         let address = bottom3Nibbles;
         let regX = bottom3Nibbles >>> 8;
         let byte = bottom3Nibbles & 0xFF;
-        let regY = bottom3Nibbles & 0XF0;
+        let regY = (bottom3Nibbles & 0XF0) >>> 4;
         let bottomNibble = bottom3Nibbles & 0xF;
 
-        console.log(`${this.currentInstruction.toString(16)} ${this.pc}`);
+        
         switch(opcode){
             case 0x0:
                 switch(bottom3Nibbles){
@@ -391,6 +407,7 @@ export default class Chip8{
 
             case 0xD:
                 this.draw(regX,regY,bottomNibble);
+                console.log(`Drawing ${regY},${regY} ${bottomNibble.toString(15)}` );
                 break;
 
             case 0xE:
@@ -449,6 +466,11 @@ export default class Chip8{
             this.pc+=2; //two byte instruction
         }
 
+        //execute callbacks
+        for(let callback of this._callbacks){
+            callback(this);
+        }
+
         
 
     }
@@ -495,10 +517,10 @@ export default class Chip8{
 
     /** CALL */
     call(addr){
-        this.sp++;
         this.callStack[this.sp] = this.pc;
         this.pc = addr;
         this._incrementPC = false;
+        this.sp++;
     }
 
     //** SE Vx, byte -- skip instruction if register Vx content equals supplied value */
@@ -640,8 +662,9 @@ export default class Chip8{
                 this.i += row;
                 spriteRow = this.ram[this.i];
             }
-
-            if(this.vram.drawRow(registerX,registerY+row,extendedMode)){
+            let x = this.vReg[registerX];
+            let y = this.vReg[registerY];
+            if(this.vram.drawRow(x,y+row,spriteRow,extendedMode)){
                 this.vReg[0xF] = 1;
             }
         }
@@ -827,7 +850,7 @@ class VRam{
 
 
     drawRow(x,y,rowData, useExtended = false){
-        //regular chip8 mode
+        console.log(`${x} ${y} ${rowData}`);
         if(!useExtended || !this._extendedMode){
             //Wrap coordinates if they go outside of screen
             x %= this._screenWidth;

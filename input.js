@@ -27,7 +27,7 @@ export class KeyboardInput{
     }
 
     onkeyup = (event) => {
-        if(this.physicalToChip8.hasOwnKey(event.keyCode)){
+        if(this.physicalToChip8.hasOwnProperty(event.keyCode)){
             let chip8Key = this.physicalToChip8[event.keyCode];
             this.chip8.unsetKey(chip8Key);
         }
