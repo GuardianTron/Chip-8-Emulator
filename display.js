@@ -6,9 +6,9 @@ export class CanvasDisplay{
         this._vram = vram; 
         this._canvas = canvasElement;
         this._displayContext = this._canvas.getContext('2d');
-        this._bgColor = 0x000000;
-        this._pxColor = 0xFFFFFF;
-        this._frameColor = 0x555555;
+        this._bgColor = "#000000";
+        this._pxColor = "#FFFFFF";
+        this._frameColor = "#555555";
 
 
         /*
@@ -72,7 +72,7 @@ export class CanvasDisplay{
         let destX = (this._canvas.width - this._blitCanvas.width)/2;
         let destY = (this._canvas.height - this._blitCanvas.height)/2;
         this._displayContext.putImageData(this._blitContext.getImageData(0,0,this._blitCanvas.width,this._blitCanvas.height),destX,destY);
-        
+        window.requestAnimationFrame(this.drawFrame);
 
 
     }

@@ -24,7 +24,7 @@
                 display.textContent = "";
                 for(let i = 0; i < vram.ram.length; i++){
                     display.textContent += vram.ram[i].toString(2).padStart(8,'0');
-                    if(i%16 == 0 && i>=15){
+                    if((i+1)%16 == 0 ){
                         display.textContent += "\n";
                     }
                 }

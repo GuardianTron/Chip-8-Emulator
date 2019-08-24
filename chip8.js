@@ -831,8 +831,10 @@ class VRam{
         let arrayPosition = y * RAM_WIDTH_BYTES + Math.floor(x/8);
         let byte = this.ram[arrayPosition];
         let bitPosition = x % 8;
-        let bit = byte & (0b10000000 >>> bitPosition);
-        return bit >>> bitPosition; 
+        let bitmask = (0b10000000 >>> bitPosition);
+        let bit = byte & bitmask;
+        bit = bit >>> (7-bitPosition);
+        return bit; 
 
 
         
