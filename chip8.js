@@ -328,8 +328,8 @@ export default class Chip8{
                 break;
 
             case 0x1:
-                break;
                 this.jump(address);
+                break;
 
             case 0x2:
                 this.call(address);
