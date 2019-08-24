@@ -176,7 +176,7 @@ export default class Chip8{
          this._dt = 0; //delay timer
          this._st = 0; //sound timer
          this._incrementPC = true; //increment the program counter -- set to false by certain instructions such as skips
-
+         this._cycleNumber = 0;
          this._pressedKeys.fill(false);
 
          this.vram.clearScreen();
@@ -204,7 +204,7 @@ export default class Chip8{
     }
 
     unsetKey(key){
-        this._presedKeys[key] = false;
+        this._pressedKeys[key] = false;
     }
 
     clearKeys(){
@@ -296,6 +296,7 @@ export default class Chip8{
     }
 
     executeCycle = ()=>{
+        this._cycleNumber++;
         this._incrementPC = true;
         //make sure this refers to chip8 when called from setTimeout
         this._currentInstruction = this.fetch();
@@ -594,7 +595,7 @@ export default class Chip8{
     /** SUB Vx,Vy -- Register X = Register X - Register Y -- Vf = Vx>Vy*/
     sub(registerX,registerY){
         this.vReg[0xF] = (this.vReg[registerX] > this.vReg[registerY])?1:0;
-        this.vReg[registerX] = this.vReg[registerX] - this.vReg[registery];
+        this.vReg[registerX] = this.vReg[registerX] - this.vReg[registerY];
     }
 
     /** SHR Vx {,Vy} -- Shift right by 1.  VF = lsb. Vx = Vx >> 1 (Note: Vy is ignored) */
@@ -611,7 +612,7 @@ export default class Chip8{
     
     /** SHL Vx {, Vy} -- shift left Vx by one bit. Save MSB into VF */
     shiftLeft(registerX){
-        this.vReg[0xF] = this.vReg[registerX] & (1 << 8);
+        this.vReg[0xF] = this.vReg[registerX] & (0x80);
         this.vReg[registerX] = this.vReg[registerX] << 1;
     }
 
