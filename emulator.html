@@ -16,7 +16,7 @@
 
             let canvas = document.getElementById("emulator_screen");
             let emulator = new Chip8Emulator(canvas);
-            emulator.loadRom("roms/chip8/MAZE");
+            emulator.loadRom("roms/chip8/UFO");
             //add debug listeners
             emulator.addCallback(function(cpu){
                 let vram = cpu.vram;

@@ -407,7 +407,6 @@ export default class Chip8{
 
             case 0xD:
                 this.draw(regX,regY,bottomNibble);
-                console.log(`Drawing ${regY},${regY} ${bottomNibble.toString(15)}` );
                 break;
 
             case 0xE:
@@ -505,8 +504,8 @@ export default class Chip8{
 
     /** RET */
     returnFromSubroutine(){
-        this.pc = this.callStack[this.sp];
         this.sp--;
+        this.pc = this.callStack[this.sp];
     }
 
     /** JP */
@@ -649,18 +648,21 @@ export default class Chip8{
         if(extendedMode){
             rows = 16;  //all sprites are 16 x 16 for extended drawing mode    
         } 
+        let startAddr = this.i
+
         for(let row = 0; row < rows; row++){
             //set start address of sprite row -- extended sprite rows are 2 bytes vs 1 byte for regular
             let spriteRow;
+            let spriteAddr;
             if(extendedMode){
-                this.i += row * 2;
-                spriteRow = this.ram[this.i] << 8;
-                this.i++;
-                spriteRow += this.ram[this.i];
+                spriteAddr = startAddr + row * 2;
+                spriteRow = this.ram[spriteAddr] << 8;
+                spriteAddr++;
+                spriteRow += this.ram[spriteAddr];
             }
             else{
-                this.i += row;
-                spriteRow = this.ram[this.i];
+                spriteAddr = startAddr + row;
+                spriteRow = this.ram[spriteAddr];
             }
             let x = this.vReg[registerX];
             let y = this.vReg[registerY];
@@ -852,7 +854,6 @@ class VRam{
 
 
     drawRow(x,y,rowData, useExtended = false){
-        console.log(`${x} ${y} ${rowData}`);
         if(!useExtended || !this._extendedMode){
             //Wrap coordinates if they go outside of screen
             x %= this._screenWidth;
