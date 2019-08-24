@@ -16,9 +16,9 @@
 
             let canvas = document.getElementById("emulator_screen");
             let emulator = new Chip8Emulator(canvas);
-            emulator.loadRom("roms/chip8/MAZE");
+            emulator.loadRom("roms/chip8/TETRIS");
             //add debug listeners
-            emulator.addCallback(function(cpu){
+            /*emulator.addCallback(function(cpu){
                 let vram = cpu.vram;
                 let display = document.getElementById('vram');
                 display.textContent = "";
@@ -28,7 +28,28 @@
                         display.textContent += "\n";
                     }
                 }
-            });
+            });*/
+            /*emulator.addCallback(function(){
+                let display = document.getElementById('debug');
+                let table = document.createElement('table');
+
+                for(let i = 0; i < 16; i++){
+                    let row = document.createElement('tr');
+                    row.appendChild(document.createElement('td'));
+                    row.appendChild(document.createElement('td'));
+                    table.appendChild(row);
+                }
+                display.appendChild(table);
+                return function(cpu){
+                    let keys = cpu._pressedKeys;
+                    let rows = table.children;
+                    for(let i = 0; i < keys.length; i++){
+                        let cells = rows[i].children;
+                        cells[0].textContent = i.toString(16);
+                        cells[1].textContent = keys[i].toString();
+                    }
+                };
+            }());*/
             
 
         </script>
