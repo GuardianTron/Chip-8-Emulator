@@ -16,7 +16,7 @@
 
             let canvas = document.getElementById("emulator_screen");
             let emulator = new Chip8Emulator(canvas);
-            emulator.loadRom("roms/chip8/TETRIS");
+            emulator.loadRom("roms/chip8/UFO");
             //add debug listeners
             /*emulator.addCallback(function(cpu){
                 let vram = cpu.vram;
@@ -29,7 +29,7 @@
                     }
                 }
             });*/
-            /*emulator.addCallback(function(){
+            emulator.addCallback(function(){
                 let display = document.getElementById('debug');
                 let table = document.createElement('table');
 
@@ -49,7 +49,7 @@
                         cells[1].textContent = keys[i].toString();
                     }
                 };
-            }());*/
+            }());
             
 
         </script>

@@ -290,9 +290,12 @@ export default class Chip8{
         return instruction;
     }
 
-    execute = ()=>{
-        this.executeCycle();
-        window.setTimeout(this.execute,1000/this._clockSpeed);
+    execute = (timestamp)=>{
+        for(let i = 0; i<10; i++){
+            this.executeCycle();
+        }
+        
+        window.requestAnimationFrame(this.execute);444
     }
 
     executeCycle = ()=>{
@@ -675,14 +678,16 @@ export default class Chip8{
 
     /** SkP Vx  -- Skip instruction if key value in Vx is pressed. */
     skipKeyPressed(registerX){
-        if(this.pressedKeys[registerX]){
+        let key = this.vReg[registerX];
+        if(this.pressedKeys[key]){
             this._skipInstruction();
         }
     }
 
     /** SKNP Vx - skip next instruction if key in Vx not pressed */
     skipKeyNotPressed(registerX){
-        if(!this.pressedKeys[registerX]){
+        let key = this.vReg[registerX];
+        if(!this.pressedKeys[key]){
             this._skipInstruction();
         }
     }

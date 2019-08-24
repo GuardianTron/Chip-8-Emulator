@@ -31,7 +31,7 @@ export class Chip8Emulator{
         this.keyboardMapper.mapKey(107,0xD);
         this.keyboardMapper.mapKey(13,0xE);
         this.keyboardMapper.mapKey(110,0xF);
-        this.cpu.clockSpeed = 4000;
+        this.cpu.clockSpeed = 1000;
 
         //start the screen
         window.requestAnimationFrame(this.display.drawFrame);

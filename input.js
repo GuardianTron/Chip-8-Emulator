@@ -23,6 +23,7 @@ export class KeyboardInput{
             let chip8Key = this.physicalToChip8[event.keyCode];
             this.chip8.setKey(chip8Key);
         }
+ 
         
     }
 
@@ -31,6 +32,7 @@ export class KeyboardInput{
             let chip8Key = this.physicalToChip8[event.keyCode];
             this.chip8.unsetKey(chip8Key);
         }
+        
     }
 
 
