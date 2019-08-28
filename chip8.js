@@ -203,10 +203,6 @@ export default class Chip8{
 
     setKey(key){
         this._pressedKeys[key] = true;
-        //hack to get around chrome's audio autoplay policies.
-        if(this.sound){
-            this.sound.resume();
-        }
     }
 
     unsetKey(key){

@@ -13,9 +13,15 @@ export class Chip8Emulator{
         this.display = new CanvasDisplay(canvas,this.cpu.vram);
         this.beep = new Beep();
 
-    
+        //resume sound when user presses a button for audio compliance
+
+       
+        window.addEventListener("keyup",this.beep.resume);
+        window.addEventListener("keydown",this.beep.resume);
+
         //set up key mapper
         window.addEventListener("keydown",this.keyboardMapper.onkeydown);
+        
         window.addEventListener("keyup",this.keyboardMapper.onkeyup);
         this.keyboardMapper.mapKey(144,1);
         this.keyboardMapper.mapKey(111,2);
@@ -35,7 +41,7 @@ export class Chip8Emulator{
         this.keyboardMapper.mapKey(110,0xF);
         this.cpu.clockSpeed = 1000;
 
-        //this.cpu.sound = new Beep();
+        //this.cpu.sound = this.beep;
 
         //start the screen
         window.requestAnimationFrame(this.display.drawFrame);

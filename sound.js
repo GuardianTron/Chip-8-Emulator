@@ -8,25 +8,31 @@ export default class Beep{
         this.gain = this.context.createGain();
         this.generator.connect(this.gain).connect(this.context.destination);
         this.playing = false;
+        this.resumed = false;
 
     }
 
     play = () =>{
-        if(!this.playing){
+        if(!this.playing && this.resumed){
             this.playing = true;
             this.generator.start(0);
         }
     }
 
     stop = () =>{
-        if(this.playing){
+        if(this.playing && this.resumed){
             this.playing = false;
             this.gain.setValueAtTime(0,this.context.currentTime + 0.015);
         }
     }
 
+    //handle chrome's audio permission issues.
     resume = ()=>{
-        this.context.resume();
+        if(!this.resumed){
+            this.context.resume().then(()=>{
+                this.resumed = true;
+            });
+        }
     }
 
 
