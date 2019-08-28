@@ -137,6 +137,8 @@ export default class Chip8{
 
         this.vram = new VRam();
 
+        this.sound = null;
+
        
 
         this._clockSpeed = 400; //default to 400hz
@@ -201,6 +203,10 @@ export default class Chip8{
 
     setKey(key){
         this._pressedKeys[key] = true;
+        //hack to get around chrome's audio autoplay policies.
+        if(this.sound){
+            this.sound.resume();
+        }
     }
 
     unsetKey(key){
@@ -467,6 +473,17 @@ export default class Chip8{
         //increment the program counter if not skipped
         if(this._incrementPC){
             this.pc+=2; //two byte instruction
+        }
+
+        //handle sound
+        if(this.sound){
+            if(this.st > 0 ){
+                this.sound.play();
+            }
+            else{
+                this.sound.stop();
+
+            }
         }
 
         //execute callbacks

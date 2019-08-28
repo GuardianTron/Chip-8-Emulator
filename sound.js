@@ -25,5 +25,9 @@ export default class Beep{
         }
     }
 
+    resume = ()=>{
+        this.context.resume();
+    }
+
 
 }

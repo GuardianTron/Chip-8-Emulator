@@ -1,6 +1,7 @@
 import { Chip8 } from "./chip8.js"
 import { CanvasDisplay } from "./display.js"
 import {KeyboardInput} from "./input.js"
+import {Beep} from "./sound.js";
 
 export {Chip8Emulator as default}
 
@@ -10,6 +11,7 @@ export class Chip8Emulator{
         this.cpu = new Chip8();
         this.keyboardMapper = new KeyboardInput(this.cpu);
         this.display = new CanvasDisplay(canvas,this.cpu.vram);
+        this.beep = new Beep();
 
     
         //set up key mapper
@@ -32,6 +34,8 @@ export class Chip8Emulator{
         this.keyboardMapper.mapKey(13,0xE);
         this.keyboardMapper.mapKey(110,0xF);
         this.cpu.clockSpeed = 1000;
+
+        //this.cpu.sound = new Beep();
 
         //start the screen
         window.requestAnimationFrame(this.display.drawFrame);
