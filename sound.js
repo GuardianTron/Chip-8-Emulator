@@ -5,8 +5,8 @@ export default class Beep{
         this.context = new AudioContext();
         this.generator = this.context.createOscillator();
         this.generator.type = "triangle";
-        this.gain = this.context.createGain();
-        this.generator.connect(this.gain).connect(this.context.destination);
+        this.gainNode = this.context.createGain();
+        this.generator.connect(this.gainNode).connect(this.context.destination);
         this.playing = false;
         this.resumed = false;
 
@@ -15,14 +15,15 @@ export default class Beep{
     play = () =>{
         if(!this.playing && this.resumed){
             this.playing = true;
-            this.generator.start(0);
+            this.gainNode.gain.setValueAtTime(.5,this.context.currentTime);
+
         }
     }
 
     stop = () =>{
         if(this.playing && this.resumed){
             this.playing = false;
-            this.gain.setValueAtTime(0,this.context.currentTime + 0.015);
+            this.gainNode.gain.setTargetAtTime(0,this.context.currentTime,0.015);
         }
     }
 
@@ -31,6 +32,8 @@ export default class Beep{
         if(!this.resumed){
             this.context.resume().then(()=>{
                 this.resumed = true;
+                this.gainNode.gain.setValueAtTime(0,this.context.currentTime);
+                this.generator.start(0);
             });
         }
     }

@@ -41,7 +41,7 @@ export class Chip8Emulator{
         this.keyboardMapper.mapKey(110,0xF);
         this.cpu.clockSpeed = 1000;
 
-        //this.cpu.sound = this.beep;
+        this.cpu.sound = this.beep;
 
         //start the screen
         window.requestAnimationFrame(this.display.drawFrame);
