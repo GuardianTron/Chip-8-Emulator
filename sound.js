@@ -1,4 +1,5 @@
-class Beep{
+export {Beep as Beep};
+export default class Beep{
     
     constructor(){
         this.context = new AudioContext();
