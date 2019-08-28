@@ -177,6 +177,8 @@ export default class Chip8{
          this._pc = 0x200; //program counter
          this._dt = 0; //delay timer
          this._st = 0; //sound timer
+         this._lastExecutedTS = 0;
+
          this._incrementPC = true; //increment the program counter -- set to false by certain instructions such as skips
          this._cycleNumber = 0;
          this._pressedKeys.fill(false);
@@ -292,12 +294,20 @@ export default class Chip8{
         return instruction;
     }
 
-    execute = (timestamp)=>{
-        for(let i = 0; i<10; i++){
+    execute = (timestamp = 0)=>{
+        //only execute cycles after clock has stabilized -- ie two frames have passed
+        let numCycles = 0;
+        if(this._lastExecutedTS != 0){
+            let timePassed = timestamp - this._lastExecutedTS;
+            numCycles = (this.clockSpeed * timePassed/1000); //clockspeed in hz, so convert timepassed to seconds
+            
+        }
+        this._lastExecutedTS = timestamp;
+        for(let i = 0; i<numCycles; i++){
             this.executeCycle();
         }
         
-        window.requestAnimationFrame(this.execute);444
+        window.requestAnimationFrame(this.execute);
     }
 
     executeCycle = ()=>{

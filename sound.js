@@ -4,7 +4,7 @@ export default class Beep{
     constructor(){
         this.context = new AudioContext();
         this.generator = this.context.createOscillator();
-        this.generator.type = "triangle";
+        this.generator.type = "square";
         this.gainNode = this.context.createGain();
         this.generator.connect(this.gainNode).connect(this.context.destination);
         this.playing = false;
