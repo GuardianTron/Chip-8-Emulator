@@ -8,6 +8,10 @@ export {Chip8Emulator as default}
 export class Chip8Emulator{
 
     constructor(canvas){
+        this.chip8Font = null;
+        this.chip8FontURL = 'fonts/chip8.cft';
+        this.superFont = null;
+
         this.cpu = new Chip8();
         this.keyboardMapper = new KeyboardInput(this.cpu);
         this.display = new CanvasDisplay(canvas,this.cpu.vram);
@@ -50,21 +54,35 @@ export class Chip8Emulator{
 
     }
 
+    async downloaChip8Font(fontURL){
+        const response = await fetch(fontURL);
+        if(response.ok){
+            const fontBuffer = await response.arrayBuffer();
+            this.chip8Font = fontBuffer;
+            this.cpu.loadChip8Font(fontBuffer);
+        }
+        else{
+            throw new Error(`Unable to load font ${fontUFL}`);
+        }
+    }
+    async downloadRom(romURL){
+        const response = await fetch(romURL);
+        if(response.ok){
+            const romBuffer = await response.arrayBuffer();
+            this.rom = new Uint8Array(romBuffer);
+        }
+        else{
+            throw new Error("Could not download the rom file.");
+        }
+        return this.rom;
+    }
     loadRom(romURL){
-        fetch(romURL).then((response) => {
-            if(response.ok){
-                console.log("Rom downloaded");
-                return response.arrayBuffer();
-            }
-            throw new Error();
-        }).then((buffer)=>{
-            console.log("Converting to array");
-            this.rom = new Uint8Array(buffer);
-            console.log(this.rom);
-            this.startRom();
-        })/*.catch((reason)=>{
-            console.log("The given rom could not be loaded.");
-        })*/;
+        let promises = new Array();
+        if(!this.chip8Font){
+            promises.push(this.downloaChip8Font(this.chip8FontURL));
+        }
+        promises.push(this.downloadRom(romURL));
+        Promise.all(promises).then(this.startRom());
         
     }
 
