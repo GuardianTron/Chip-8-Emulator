@@ -1,7 +1,7 @@
 
 export {Chip8, VRam};
 
-
+const CHIP_8_FONT_SIZE = 80;
 const programOffset = 0x200;
 export default class Chip8{
 
@@ -33,7 +33,7 @@ export default class Chip8{
     }
 
     loadChip8Font(font){
-        this.chip8font = font;
+        this.chip8Font = font;
     }
 
 
@@ -48,7 +48,7 @@ export default class Chip8{
         if(!(this.chip8Font instanceof Uint8Array)){
             throw new Error("Chip 8 font is must an instance of Uint8Array");
         }
-        this.ram.set(this.chip8font);    
+        this.ram.set(this.chip8Font);    
 
         //copy rom into ram
         this.ram.set(rom.slice(0,4096),programOffset);

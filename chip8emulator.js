@@ -58,12 +58,13 @@ export class Chip8Emulator{
         const response = await fetch(fontURL);
         if(response.ok){
             const fontBuffer = await response.arrayBuffer();
-            this.chip8Font = fontBuffer;
-            this.cpu.loadChip8Font(fontBuffer);
+            this.chip8Font = new Uint8Array(fontBuffer);
+            this.cpu.loadChip8Font(this.chip8Font);
         }
         else{
             throw new Error(`Unable to load font ${fontUFL}`);
         }
+        return this.chip8Font;
     }
     async downloadRom(romURL){
         const response = await fetch(romURL);
@@ -77,12 +78,12 @@ export class Chip8Emulator{
         return this.rom;
     }
     loadRom(romURL){
-        let promises = new Array();
+        let promises = [];
         if(!this.chip8Font){
             promises.push(this.downloaChip8Font(this.chip8FontURL));
         }
         promises.push(this.downloadRom(romURL));
-        Promise.all(promises).then(this.startRom());
+        Promise.all(promises).then(()=>{this.startRom()});
         
     }
 
