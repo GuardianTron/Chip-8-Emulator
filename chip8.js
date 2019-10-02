@@ -2,6 +2,7 @@
 export {Chip8, VRam};
 
 const CHIP_8_FONT_SIZE = 80;
+const SUPER_CHIP_FONT_SIZE = 320;
 const programOffset = 0x200;
 export default class Chip8{
 
@@ -48,7 +49,15 @@ export default class Chip8{
         if(!(this.chip8Font instanceof Uint8Array)){
             throw new Error("Chip 8 font is must an instance of Uint8Array");
         }
-        this.ram.set(this.chip8Font);    
+        this.ram.set(this.chip8Font.slice(0,CHIP_8_FONT_SIZE));
+        
+        //copy 16 bit super chip font into ram
+        if(! (this.superChipFont instanceof Uint8Array)){
+            throw new Error("Super chip font must be an instance of Uint8Array");
+        }
+
+        this.ram.set(this.superChipFont.slice(0,SUPER_CHIP_FONT_SIZE),CHIP_8_FONT_SIZE);
+
 
         //copy rom into ram
         this.ram.set(rom.slice(0,4096),programOffset);
