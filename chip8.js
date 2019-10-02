@@ -37,6 +37,10 @@ export default class Chip8{
         this.chip8Font = font;
     }
 
+    loadSuperFont(font){
+        this.superFont = font;
+    }
+
 
     loadRom(rom){
         if(!(rom instanceof Uint8Array)){
