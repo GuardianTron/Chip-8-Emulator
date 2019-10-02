@@ -8,6 +8,11 @@ export {Chip8Emulator as default}
 export class Chip8Emulator{
 
     constructor(canvas){
+        this.chip8Font = null;
+        this.chip8FontURL = 'fonts/chip8.cft';
+        this.superFontURL = 'fonts/chip8super.sft';
+        this.superFont = null;
+
         this.cpu = new Chip8();
         this.keyboardMapper = new KeyboardInput(this.cpu);
         this.display = new CanvasDisplay(canvas,this.cpu.vram);
@@ -50,21 +55,41 @@ export class Chip8Emulator{
 
     }
 
+    async _downloadFile(fileURL){
+        const response = await fetch(fileURL);
+        if(response.ok){
+            const fileBuffer = await response.arrayBuffer();
+            return new Uint8Array(fileBuffer);
+        }
+        else{
+            throw new Error(`Unable to load file ${fileURL}.`);
+        }
+    }
+
+    async downloaChip8Font(fontURL){
+       const font = await this._downloadFile(fontURL);
+       this.cpu.loadChip8Font(font);
+       
+    }
+
+    async downloadSuperFont(fontURL){
+        this.superFont = await this._downloadFile(fontURL);
+        this.cpu.loadSuperFont(this.superFont);
+    }
+    async downloadRom(romURL){
+        this.rom = await this._downloadFile(romURL);
+        return this.rom;
+    }
     loadRom(romURL){
-        fetch(romURL).then((response) => {
-            if(response.ok){
-                console.log("Rom downloaded");
-                return response.arrayBuffer();
-            }
-            throw new Error();
-        }).then((buffer)=>{
-            console.log("Converting to array");
-            this.rom = new Uint8Array(buffer);
-            console.log(this.rom);
-            this.startRom();
-        })/*.catch((reason)=>{
-            console.log("The given rom could not be loaded.");
-        })*/;
+        let promises = [];
+        if(!this.chip8Font){
+            promises.push(this.downloaChip8Font(this.chip8FontURL));
+        }
+        if(!this.superFont){
+            promises.push(this.downloadSuperFont(this.superFontURL));
+        }
+        promises.push(this.downloadRom(romURL));
+        Promise.all(promises).then(()=>{this.startRom()});
         
     }
 
