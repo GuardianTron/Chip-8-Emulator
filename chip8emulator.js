@@ -10,7 +10,7 @@ export class Chip8Emulator{
     constructor(canvas){
         this.chip8Font = null;
         this.chip8FontURL = 'fonts/chip8.cft';
-        this.superFont = 'fonts/chip8super.sft';
+        this.superFontURL = 'fonts/chip8super.sft';
         this.superFont = null;
 
         this.cpu = new Chip8();
@@ -86,7 +86,7 @@ export class Chip8Emulator{
             promises.push(this.downloaChip8Font(this.chip8FontURL));
         }
         if(!this.superFont){
-            promises.push(this.downloadSuperFont(this.superFontUrl));
+            promises.push(this.downloadSuperFont(this.superFontURL));
         }
         promises.push(this.downloadRom(romURL));
         Promise.all(promises).then(()=>{this.startRom()});
