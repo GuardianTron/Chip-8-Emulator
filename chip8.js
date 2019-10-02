@@ -38,7 +38,7 @@ export default class Chip8{
     }
 
     loadSuperFont(font){
-        this.superFont = font;
+        this.superChipFont = font;
     }
 
 
