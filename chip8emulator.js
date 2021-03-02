@@ -28,16 +28,6 @@ export class Chip8Emulator{
         window.addEventListener("keydown",this.keyboardMapper.onkeydown);
         
         window.addEventListener("keyup",this.keyboardMapper.onkeyup);
-        let keymap = {
-            4:103,
-            5:104,
-            6:105
-        };
-        Object.keys(keymap).forEach((chip8Key) => {
-            const keyCode = keymap[chip8Key]
-            this.keyboardMapper.mapKey(keyCode,parseInt(chip8Key,16))
-        });
-  
         
         /* leaving example code for testing
         this.keyboardMapper.mapKey(144,1);
@@ -93,6 +83,7 @@ export class Chip8Emulator{
         this.rom = await this._downloadFile(romURL);
         return this.rom;
     }
+
     loadRom(romURL){
         let promises = [];
         if(!this.chip8Font){
@@ -104,6 +95,22 @@ export class Chip8Emulator{
         promises.push(this.downloadRom(romURL));
         Promise.all(promises).then(()=>{this.startRom()});
         
+    }
+
+    /**
+     * Load the keymap from a parsed json object
+     * Format
+     * Chip 8 keys can be hexidecimal strings.
+     * Modern Key Codes are integers refering to modern keyboard mappings.
+     * 
+     * @param {Object} keyMap {chip8KeyCode:modernKeycode} 
+     */
+    loadKeyMap(keyMap){
+        Object.keys(keyMap).forEach((chip8Key)=>{
+            const keyCode = keyMap[chip8Key];
+            const chip8Parsed = parseInt(chip8Key,16);
+            this.keyboardMapper.mapKey(keyCode,chip8Parsed);
+        });
     }
 
     startRom(){

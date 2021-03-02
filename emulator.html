@@ -16,6 +16,12 @@
 
             let canvas = document.getElementById("emulator_screen");
             let emulator = new Chip8Emulator(canvas);
+            let keymap = {
+                4:103,
+                5:104,
+                6:105
+            };
+            emulator.loadKeyMap(keymap)
             emulator.loadRom("roms/chip8/UFO");
             //add debug listeners
             /*emulator.addCallback(function(cpu){
