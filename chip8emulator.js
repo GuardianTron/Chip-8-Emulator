@@ -28,17 +28,16 @@ export class Chip8Emulator{
         window.addEventListener("keydown",this.keyboardMapper.onkeydown);
         
         window.addEventListener("keyup",this.keyboardMapper.onkeyup);
-        let keymap = new Array(16);
-        keymap.fill(-1);
-        keymap[4]=103;
-        keymap[5]=104;
-        keymap[6]=105;
-
-        keymap.forEach((code,chip8Key)=>{
-            if(chip8Key > -1){
-                this.keyboardMapper.mapKey(code,chip8Key);
-            }
+        let keymap = {
+            4:103,
+            5:104,
+            6:105
+        };
+        Object.keys(keymap).forEach((chip8Key) => {
+            const keyCode = keymap[chip8Key]
+            this.keyboardMapper.mapKey(keyCode,parseInt(chip8Key,16))
         });
+  
         
         /* leaving example code for testing
         this.keyboardMapper.mapKey(144,1);
