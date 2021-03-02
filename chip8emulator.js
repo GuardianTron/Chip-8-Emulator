@@ -28,6 +28,19 @@ export class Chip8Emulator{
         window.addEventListener("keydown",this.keyboardMapper.onkeydown);
         
         window.addEventListener("keyup",this.keyboardMapper.onkeyup);
+        let keymap = new Array(16);
+        keymap.fill(-1);
+        keymap[4]=103;
+        keymap[5]=104;
+        keymap[6]=105;
+
+        keymap.forEach((code,chip8Key)=>{
+            if(chip8Key > -1){
+                this.keyboardMapper.mapKey(code,chip8Key);
+            }
+        });
+        
+        /* leaving example code for testing
         this.keyboardMapper.mapKey(144,1);
         this.keyboardMapper.mapKey(111,2);
         this.keyboardMapper.mapKey(106,3);
@@ -44,8 +57,9 @@ export class Chip8Emulator{
         this.keyboardMapper.mapKey(107,0xD);
         this.keyboardMapper.mapKey(13,0xE);
         this.keyboardMapper.mapKey(110,0xF);
+        */
         this.cpu.clockSpeed = 1000;
-
+        
         this.cpu.sound = this.beep;
 
         //start the screen
