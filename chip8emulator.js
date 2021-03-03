@@ -103,7 +103,7 @@ export class Chip8Emulator{
      * Chip 8 keys can be hexidecimal strings.
      * Modern Key Codes are integers refering to modern keyboard mappings.
      * 
-     * @param {Object} keyMap {chip8KeyCode:modernKeycode} 
+     * @param {Object} keyMap A javascript object mapping chip 8 hex keys to key codes 
      */
     loadKeyMap(keyMap){
         Object.keys(keyMap).forEach((chip8Key)=>{
