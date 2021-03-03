@@ -57,6 +57,21 @@ export class Chip8Emulator{
 
 
     }
+    get chip8Font(){
+        return this.cpu.chip8Font;
+    }
+
+    set chip8Font(fontBuffer){
+        this.cpu.loadChip8Font(fontBuffer);
+    }
+
+    get superChipFont(){
+        return this.cpu.superChipFont;
+    }
+
+    set superChipFont(fontBuffer){
+        this.cpu.loadSuperFont(fontBuffer);
+    }
 
     async _downloadFile(fileURL){
         const response = await fetch(fileURL);
