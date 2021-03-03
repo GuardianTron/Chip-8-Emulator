@@ -13,6 +13,7 @@
         </div>
         <script type="module">
             import Chip8Emulator from  "./chip8emulator.js";
+            import loadGame from "./loaders.js";
 
             let canvas = document.getElementById("emulator_screen");
             let emulator = new Chip8Emulator(canvas);
@@ -22,7 +23,7 @@
                 6:105
             };
             emulator.loadKeyMap(keymap)
-            emulator.loadRom("roms/chip8/UFO");
+            loadGame(emulator,'fonts/chip8.cft','fonts/chip8super.sft',"roms/chip8/UFO");
             //add debug listeners
             /*emulator.addCallback(function(cpu){
                 let vram = cpu.vram;
