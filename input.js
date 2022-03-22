@@ -7,20 +7,20 @@ export class KeyboardInput{
         this.chip8toPhysical = new Map();
     }
 
-    mapKey(keycode, chip8Key){
+    mapKey(code, chip8Key){
         //remove old key code
         if(this.chip8toPhysical.has(chip8Key)){
-            let oldKeycode = this.chip8toPhysical.get(chip8Key);
-            this.physicalToChip8.delete(oldKeycode);
+            let oldCode = this.chip8toPhysical.get(chip8Key);
+            this.physicalToChip8.delete(oldCode);
         }
 
-        this.chip8toPhysical.set(chip8Key, keycode);
-        this.physicalToChip8.set(keycode,chip8Key);
+        this.chip8toPhysical.set(chip8Key, code);
+        this.physicalToChip8.set(code,chip8Key);
     }
 
     onkeydown = (event) => {
-        if(this.physicalToChip8.has(event.keyCode)){
-            let chip8Key = this.physicalToChip8.get(event.keyCode);
+        if(this.physicalToChip8.has(event.code)){
+            let chip8Key = this.physicalToChip8.get(event.code);
             this.chip8.setKey(chip8Key);
         }
  
@@ -28,8 +28,8 @@ export class KeyboardInput{
     }
 
     onkeyup = (event) => {
-        if(this.physicalToChip8.has(event.keyCode)){
-            let chip8Key = this.physicalToChip8.get(event.keyCode);
+        if(this.physicalToChip8.has(event.code)){
+            let chip8Key = this.physicalToChip8.get(event.code);
             this.chip8.unsetKey(chip8Key);
         }
         
