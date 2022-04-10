@@ -13,13 +13,13 @@ export class KeyboardInput{
     }
 
     mapKey(code, chip8Key){
-        //remove old key code
-        if(this.chip8toPhysical.has(chip8Key)){
-            let oldCode = this.chip8toPhysical.get(chip8Key);
-            this.physicalToChip8.delete(oldCode);
+        //allow multiple physical keys to be mapped to
+        //one chip8 key
+        if(!this.chip8toPhysical.has(chip8Key)){
+            this.chip8toPhysical.set(chip8Key,[]);
         }
 
-        this.chip8toPhysical.set(chip8Key, code);
+        this.chip8toPhysical.get(chip8Key).push(code);
         this.physicalToChip8.set(code,chip8Key);
     }
 
