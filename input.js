@@ -7,6 +7,11 @@ export class KeyboardInput{
         this.chip8toPhysical = new Map();
     }
 
+    clearKeyMap(){
+        this.physicalToChip8.clear();
+        this.chip8toPhysical.clear();
+    }
+
     mapKey(code, chip8Key){
         //remove old key code
         if(this.chip8toPhysical.has(chip8Key)){
@@ -22,9 +27,7 @@ export class KeyboardInput{
         if(this.physicalToChip8.has(event.code)){
             let chip8Key = this.physicalToChip8.get(event.code);
             this.chip8.setKey(chip8Key);
-        }
- 
-        
+        }        console.log(e.target.id);
     }
 
     onkeyup = (event) => {
