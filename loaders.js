@@ -1,4 +1,4 @@
-export {loadGame};
+export {loadGame, downloadBinaryFile};
 
 async function downloadBinaryFile(fileURL){
     const response = await fetch(fileURL);
@@ -12,7 +12,7 @@ async function downloadBinaryFile(fileURL){
     }
 }
 
-export default function loadGame(emulator,chip8FontURL,superChipFontURL,romURL){
+export default function loadGame(emulator,chip8FontURL,superChipFontURL,romURL,romDownloader = downloadBinaryFile){
     let promises = [];
     if(!emulator.chip8Font){
         promises.push(async function(){
@@ -25,7 +25,7 @@ export default function loadGame(emulator,chip8FontURL,superChipFontURL,romURL){
         }());
     }
     promises.push(async function(){
-        emulator.rom = await downloadBinaryFile(romURL);
+        emulator.rom = await romDownloader(romURL);
     }());
     Promise.all(promises).then(()=>{emulator.startRom()});
     
